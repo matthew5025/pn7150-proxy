@@ -19,7 +19,10 @@ enum MessageType {
     TAG_INFO_REQ = 0x03,
     TAG_INFO_REPLY = 0x04,
     TAG_CMD = 0x05,
-    TAG_CMD_REPLY = 0x06
+    TAG_CMD_REPLY = 0x06,
+    CARD_GONE = 0x07,
+    READER_GONE = 0x08
+
 };
 
 unsigned char inBuffer[1024];
@@ -39,19 +42,13 @@ int checkHeader(unsigned char *input) {
     return memcmp(input, header, 3);
 }
 
-int sendMessage() {
+long sendMessage() {
     memcpy(outBuffer, header, 3);
     outBuffer[3] = outputMessage.type;
     memcpy(&outBuffer[4], &outputMessage.length, sizeof(uint16_t));
     memcpy(outBuffer + 6, outputMessage.message, outputMessage.length);
     printf("Sending message of type %#04x with length %u\r\n", outputMessage.type, outputMessage.length);
-    long response = send(comSocket, outBuffer, outputMessage.length + 6, MSG_NOSIGNAL);
-    if (response == -1 && errno == EPIPE) {
-        printf("Server has died.");
-        return -1;
-    } else {
-        return 1;
-    }
+    return send(comSocket, outBuffer, outputMessage.length + 6, MSG_NOSIGNAL);
 }
 
 void genRandomData(unsigned char *buffer, unsigned int bufferSize) {
@@ -74,11 +71,12 @@ int initComms() {
     outputMessage.type = ECHO;
     outputMessage.length = sizeof(outputMessage.message);
     genRandomData(outputMessage.message, outputMessage.length);
-    return sendMessage();
+    sendMessage();
+    return 0;
 }
 
 
-int messageHandler() {
+void messageHandler() {
     switch (inputMessage.type) {
         case ECHO:
             outputMessage.length = inputMessage.length;
@@ -86,33 +84,26 @@ int messageHandler() {
             outputMessage.type = ECHO_REPLY;
             break;
         case ECHO_REPLY:
-            printf("Communications established. Requesting for card info...\r\n");
             if (memcmp(inputMessage.message, outputMessage.message, sizeof(outputMessage.message)) == 0) {
-                outputMessage.length = 0;
-                outputMessage.type = TAG_INFO_REQ;
-            } else {
-                return 1;
+                printf("Communications established.\r\n");
+                return;
             }
-            break;
-        case TAG_INFO_REQ:
-            break;
         case TAG_INFO_REPLY:
             sharedBufferLen = inputMessage.length;
             memcpy(&sharedBuffer, &inputMessage.message, sharedBufferLen);
             startEmulation();
-            return 1;
+            return;
         case TAG_CMD_REPLY:
             sharedBufferLen = inputMessage.length;
             memcpy(&sharedBuffer, &inputMessage.message, sharedBufferLen);
             hceResponse();
-            return 1;
-
+            return;
+        case CARD_GONE:
+            endEmulation();
+        default:
+            return;
     }
-
-    return
-
-            sendMessage();
-
+    sendMessage();
 }
 
 

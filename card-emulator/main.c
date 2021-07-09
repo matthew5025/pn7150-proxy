@@ -35,7 +35,7 @@ int main(int argc, char const *argv[]) {
             printf("Connected\r\n");
             setSocket(sock);
             int resp = initComms();
-            if (resp != 1) {
+            if (resp == -1) {
                 printf("Disconnected!\n");
                 break;
             }

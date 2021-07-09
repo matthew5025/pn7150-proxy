@@ -13,6 +13,8 @@ pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 
 nfcTagCallback_t g_TagCB;
 nfc_tag_info_t g_tagInfos;
+void (*onCardDepart)();
+void (*onCardArrive)();
 
 void onTagArrival(nfc_tag_info_t *pTagInfo){
     g_tagInfos = *pTagInfo;
@@ -27,10 +29,20 @@ void onTagArrival(nfc_tag_info_t *pTagInfo){
     memcpy(&sharedBuffer[12 + g_tagInfos.uid_length], g_tagInfos.add_data, additionalInfoLen);
 
     sharedBufferLen = 12 + g_tagInfos.uid_length + additionalInfoLen;
-    pthread_cond_signal(&condition);
+    (*onCardArrive)();
 }
 
+void setOnCardDepartCallback(void (*ptr)()){
+    onCardDepart = ptr;
+}
+
+
 void onTagDeparture(void){
+    (*onCardDepart)();
+}
+
+void setOnCardArrivalCallback(void (*ptr)()){
+    onCardArrive = ptr;
 }
 
 unsigned int sendTagCommand(unsigned char* result, unsigned int maxLen, unsigned int timeout){
@@ -58,12 +70,11 @@ unsigned int sendTagCommand(unsigned char* result, unsigned int maxLen, unsigned
 }
 
 
-void getTagInfo(){
+void enableReader(){
     g_TagCB.onTagArrival = onTagArrival;
     g_TagCB.onTagDeparture = onTagDeparture;
     nfcManager_doDeinitialize();
     nfcManager_doInitialize();
     nfcManager_registerTagCallback(&g_TagCB);
     nfcManager_enableDiscovery(DEFAULT_NFA_TECH_MASK, 0x01, 0, 0);
-    pthread_cond_wait(&condition, &mutex);
 }

@@ -16,7 +16,9 @@ enum MessageType{
     TAG_INFO_REQ = 0x03,
     TAG_INFO_REPLY = 0x04,
     TAG_CMD = 0x05,
-    TAG_CMD_REPLY = 0x06
+    TAG_CMD_REPLY = 0x06,
+    CARD_GONE = 0x07,
+    READER_GONE = 0x08
 };
 
 unsigned char inBuffer[1024];
@@ -46,6 +48,18 @@ long sendMessage() {
     return send(comSocket, outBuffer, outputMessage.length + 6, 0);
 }
 
+void sendCardDeparted(){
+    outputMessage.length = 0;
+    outputMessage.type = CARD_GONE;
+    sendMessage();
+}
+
+void sendCardArrival(){
+    outputMessage.type = TAG_INFO_REPLY;
+    outputMessage.length = sharedBufferLen;
+    memcpy(outputMessage.message, sharedBuffer, sharedBufferLen);
+    sendMessage();
+}
 
 void messageHandler() {
     switch (inputMessage.type) {
@@ -53,12 +67,9 @@ void messageHandler() {
             outputMessage.length = inputMessage.length;
             memcpy(outputMessage.message, inputMessage.message, inputMessage.length);
             outputMessage.type = ECHO_REPLY;
-            break;
-        case TAG_INFO_REQ:
-            getTagInfo();
-            outputMessage.type = TAG_INFO_REPLY;
-            outputMessage.length = sharedBufferLen;
-            memcpy(outputMessage.message, sharedBuffer, sharedBufferLen);
+            enableReader();
+            setOnCardDepartCallback(sendCardDeparted);
+            setOnCardArrivalCallback(sendCardArrival);
             break;
         case TAG_CMD:
             sharedBufferLen = inputMessage.length;
@@ -108,3 +119,4 @@ int readSocket() {
 void setSocket(int in_sock) {
     comSocket = in_sock;
 }
+
