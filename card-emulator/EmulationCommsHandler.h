@@ -8,5 +8,5 @@
 #endif //CARD_EMULATOR_EMULATIONCOMMSHANDLER_H
 void setSocket(int in_sock);
 int readSocket();
-void initComms();
-void hceResponse();
+int initComms();
+int hceResponse();

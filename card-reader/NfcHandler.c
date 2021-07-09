@@ -16,8 +16,17 @@ nfc_tag_info_t g_tagInfos;
 
 void onTagArrival(nfc_tag_info_t *pTagInfo){
     g_tagInfos = *pTagInfo;
-    sharedBufferLen = g_tagInfos.uid_length;
-    memcpy(sharedBuffer, g_tagInfos.uid, sharedBufferLen);
+    unsigned int additionalInfoLen = 0;
+    if(g_tagInfos.technology == 2){
+        additionalInfoLen = 11;
+    }
+    memcpy(&sharedBuffer[0], &g_tagInfos.technology, 4);
+    memcpy(&sharedBuffer[4], &g_tagInfos.uid_length, 4);
+    memcpy(&sharedBuffer[8], g_tagInfos.uid, g_tagInfos.uid_length);
+    memcpy(&sharedBuffer[8 + g_tagInfos.uid_length], &additionalInfoLen, 4);
+    memcpy(&sharedBuffer[12 + g_tagInfos.uid_length], g_tagInfos.add_data, additionalInfoLen);
+
+    sharedBufferLen = 12 + g_tagInfos.uid_length + additionalInfoLen;
     pthread_cond_signal(&condition);
 }
 

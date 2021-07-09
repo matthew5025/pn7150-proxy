@@ -9,10 +9,11 @@
 #include <stdlib.h>
 #include <time.h>
 #include <stdio.h>
+#include <errno.h>
 #include "EmulationCommsHandler.h"
 #include "NfcEmulHandler.h"
 
-enum MessageType{
+enum MessageType {
     ECHO = 0x01,
     ECHO_REPLY = 0x02,
     TAG_INFO_REQ = 0x03,
@@ -21,22 +22,18 @@ enum MessageType{
     TAG_CMD_REPLY = 0x06
 };
 
-enum ConnectionState{NEW_CONN, CONN_EST, CARD_RDY};
-
 unsigned char inBuffer[1024];
 unsigned char outBuffer[1024];
-unsigned char tempBuffer[512];
 int comSocket = -1;
 unsigned char header[] = {0xAB, 0xBB, 0xCB};
 
 struct MessagePacket {
     unsigned char type;
     uint16_t length;
-    unsigned char message [512];
+    unsigned char message[512];
 };
 
 struct MessagePacket inputMessage, outputMessage;
-enum ConnectionState connectionState = NEW_CONN;
 
 int checkHeader(unsigned char *input) {
     return memcmp(input, header, 3);
@@ -45,20 +42,26 @@ int checkHeader(unsigned char *input) {
 int sendMessage() {
     memcpy(outBuffer, header, 3);
     outBuffer[3] = outputMessage.type;
-    memcpy(&outBuffer[4], &outputMessage.length, sizeof (uint16_t));
+    memcpy(&outBuffer[4], &outputMessage.length, sizeof(uint16_t));
     memcpy(outBuffer + 6, outputMessage.message, outputMessage.length);
     printf("Sending message of type %#04x with length %u\r\n", outputMessage.type, outputMessage.length);
-    return send(comSocket, outBuffer, outputMessage.length + 6, 0);
+    long response = send(comSocket, outBuffer, outputMessage.length + 6, MSG_NOSIGNAL);
+    if (response == -1 && errno == EPIPE) {
+        printf("Server has died.");
+        return -1;
+    } else {
+        return 1;
+    }
 }
 
-void genRandomData(unsigned char* buffer, unsigned int bufferSize){
+void genRandomData(unsigned char *buffer, unsigned int bufferSize) {
     srand(time(NULL));
     for (int i = 0; i < bufferSize; i++) {
         buffer[i] = rand() % 256;
     }
 }
 
-void sendTagCommand(){
+void sendTagCommand() {
     memcpy(outputMessage.message, sharedBuffer, sharedBufferLen);
     outputMessage.type = TAG_CMD;
     outputMessage.length = sharedBufferLen;
@@ -66,17 +69,16 @@ void sendTagCommand(){
 }
 
 
-void initComms(){
+int initComms() {
     setOnDataCallback(sendTagCommand);
     outputMessage.type = ECHO;
     outputMessage.length = sizeof(outputMessage.message);
     genRandomData(outputMessage.message, outputMessage.length);
-    sendMessage();
+    return sendMessage();
 }
 
 
-
-void messageHandler() {
+int messageHandler() {
     switch (inputMessage.type) {
         case ECHO:
             outputMessage.length = inputMessage.length;
@@ -84,51 +86,57 @@ void messageHandler() {
             outputMessage.type = ECHO_REPLY;
             break;
         case ECHO_REPLY:
-            if(connectionState == NEW_CONN){
-                printf("Communications established. Requesting for card info...\r\n");
-                if(memcmp(inputMessage.message, outputMessage.message, sizeof(outputMessage.message)) == 0){
-                    connectionState = CONN_EST;
-                    outputMessage.length = 0;
-                    outputMessage.type = TAG_INFO_REQ;
-                }else{
-                    return;
-                }
-            }else{
-                return;
+            printf("Communications established. Requesting for card info...\r\n");
+            if (memcmp(inputMessage.message, outputMessage.message, sizeof(outputMessage.message)) == 0) {
+                outputMessage.length = 0;
+                outputMessage.type = TAG_INFO_REQ;
+            } else {
+                return 1;
             }
+            break;
         case TAG_INFO_REQ:
             break;
         case TAG_INFO_REPLY:
             sharedBufferLen = inputMessage.length;
             memcpy(&sharedBuffer, &inputMessage.message, sharedBufferLen);
             startEmulation();
-            return;
+            return 1;
         case TAG_CMD_REPLY:
             sharedBufferLen = inputMessage.length;
             memcpy(&sharedBuffer, &inputMessage.message, sharedBufferLen);
             hceResponse();
-            return;
+            return 1;
 
     }
-    sendMessage();
+
+    return
+
+            sendMessage();
+
 }
 
 
 int readSocket() {
-    int bytesRead = recv(comSocket, inBuffer, 1024, 0);
+    long bytesRead = recv(comSocket, inBuffer, 1024, 0);
     while (bytesRead < 5) {
-        int messageLen = recv(comSocket, inBuffer + bytesRead, 1024 - bytesRead, 0);
+        long messageLen = recv(comSocket, inBuffer + bytesRead, 1024 - bytesRead, 0);
+        if (messageLen < 1) {
+            return -1;
+        }
         bytesRead = messageLen + bytesRead;
     }
     if (checkHeader(inBuffer) == 0) {
         inputMessage.type = inBuffer[3];
-        inputMessage.length = *(uint16_t*)&inBuffer[4];
+        inputMessage.length = *(uint16_t *) &inBuffer[4];
         if (inputMessage.length == 0) {
-            memset(inputMessage.message, 0, sizeof (inputMessage.message));
+            memset(inputMessage.message, 0, sizeof(inputMessage.message));
         }
-        int remainingBytes = inputMessage.length - (bytesRead - 6);
+        long remainingBytes = inputMessage.length - (bytesRead - 6);
         while (remainingBytes > 0) {
-            int messageLen = recv(comSocket, inBuffer + bytesRead, remainingBytes, 0);
+            long messageLen = recv(comSocket, inBuffer + bytesRead, remainingBytes, 0);
+            if (messageLen < 1) {
+                return -1;
+            }
             bytesRead = messageLen + bytesRead;
             remainingBytes = inputMessage.length - (bytesRead - 6);
         }
@@ -136,6 +144,8 @@ int readSocket() {
         printf("Got message of type %#04x with length %u\r\n", inputMessage.type, inputMessage.length);
         messageHandler();
     } else {
+        printf("Invalid header, closing socket.\n");
+        endEmulation();
         return -1;
     }
     return 0;

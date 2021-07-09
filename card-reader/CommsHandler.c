@@ -37,7 +37,7 @@ int checkHeader(unsigned char *input) {
     return memcmp(input, header, 3);
 }
 
-int sendMessage() {
+long sendMessage() {
     memcpy(outBuffer, header, 3);
     outBuffer[3] = outputMessage.type;
     memcpy(&outBuffer[4], &outputMessage.length, sizeof (uint16_t));
@@ -72,20 +72,26 @@ void messageHandler() {
 
 
 int readSocket() {
-    int bytesRead = recv(comSocket, inBuffer, 1024, 0);
+    long bytesRead = recv(comSocket, inBuffer, 1024, 0);
     while (bytesRead < 5) {
-        int messageLen = recv(comSocket, inBuffer + bytesRead, 1024 - bytesRead, 0);
+        long messageLen = recv(comSocket, inBuffer + bytesRead, 1024 - bytesRead, 0);
+        if (messageLen < 1) {
+            return -1;
+        }
         bytesRead = messageLen + bytesRead;
     }
     if (checkHeader(inBuffer) == 0) {
         inputMessage.type = inBuffer[3];
-        inputMessage.length = *(uint16_t*)&inBuffer[4];
+        inputMessage.length = *(uint16_t *) &inBuffer[4];
         if (inputMessage.length == 0) {
-            memset(inputMessage.message, 0, sizeof (inputMessage.message));
+            memset(inputMessage.message, 0, sizeof(inputMessage.message));
         }
-        int remainingBytes = inputMessage.length - (bytesRead - 6);
+        long remainingBytes = inputMessage.length - (bytesRead - 6);
         while (remainingBytes > 0) {
-            int messageLen = recv(comSocket, inBuffer + bytesRead, remainingBytes, 0);
+            long messageLen = recv(comSocket, inBuffer + bytesRead, remainingBytes, 0);
+            if (messageLen < 1) {
+                return -1;
+            }
             bytesRead = messageLen + bytesRead;
             remainingBytes = inputMessage.length - (bytesRead - 6);
         }
@@ -93,6 +99,7 @@ int readSocket() {
         printf("Got message of type %#04x with length %u\r\n", inputMessage.type, inputMessage.length);
         messageHandler();
     } else {
+        printf("Invalid header.\n");
         return -1;
     }
     return 0;

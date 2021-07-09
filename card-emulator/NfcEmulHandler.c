@@ -60,7 +60,6 @@ void onDataReceived(unsigned char *data, unsigned int data_length)
 
     fflush(stdout);
     (*onDataCallback)();
-    return;
 }
 
 void hceResponse(){
@@ -80,10 +79,27 @@ void startEmulation(){
     g_HceCB.onDataReceived = onDataReceived;
     g_HceCB.onHostCardEmulationActivated = onHostCardEmulationActivated;
     g_HceCB.onHostCardEmulationDeactivated = onHostCardEmulationDeactivated;
+    unsigned int cardTech = *(unsigned int *)&sharedBuffer;
+    unsigned long techMask = 0x00;
+    unsigned int uidLen = *(unsigned int *)&sharedBuffer[4];
+    unsigned int addInfoLen = *(unsigned int *)&sharedBuffer[8 + uidLen];
+    if(cardTech == 2){
+        techMask = 0x02;
+    }else if(cardTech == 1){
+        techMask = 0x01;
+    }
 
+    setConfigValue("HOST_LISTEN_TECH_MASK", &techMask, sizeof (techMask));
     nfcManager_doInitialize();
     nfcHce_registerHceCallback(&g_HceCB);
-    nfcManager_setConfig(0x39, sharedBufferLen, sharedBuffer);
+    nfcManager_setConfig(0x39, uidLen, &sharedBuffer[8]);
+    nfcManager_setConfig(0x3A, 4, &sharedBuffer[12 + uidLen + 4]);
     nfcManager_enableDiscovery(0x00, 0, 1, 0);
 
+}
+
+void endEmulation(){
+    nfcHce_deregisterHceCallback();
+    nfcManager_disableDiscovery();
+    nfcManager_doDeinitialize();
 }
