@@ -25,7 +25,7 @@ jobs:
     
     - name: Install library
       run: |
-       git clone linux_libnfc-nci
+       git clone https://github.com/matthew5025/linux_libnfc-nci
        cd linux_libnfc-nci
        ./configure
        make
