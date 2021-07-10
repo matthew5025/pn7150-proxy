@@ -80,7 +80,8 @@ jobs:
     #    uses a compiled language
 
     - run: |
-       cmake --build . --target all
+       cmake .
+       cmake --build ./ --target all
 
 
     - name: Perform CodeQL Analysis
