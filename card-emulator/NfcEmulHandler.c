@@ -23,7 +23,7 @@ void setOnDataCallback(void (*ptr)()){
 
 void onHostCardEmulationActivated(unsigned char mode)
 {
-    printf("-------------\nCard activated - ");
+    printf("Card activated\n");
     g_readerMode = mode;
     switch(mode)
     {
@@ -40,7 +40,7 @@ void onHostCardEmulationActivated(unsigned char mode)
 
 void onHostCardEmulationDeactivated()
 {
-    printf("Card deactivated\n-------------\n");
+    printf("Card deactivated\n");
     g_readerMode = 0x00;
 }
 
@@ -48,28 +48,12 @@ void onHostCardEmulationDeactivated()
 
 void onDataReceived(unsigned char *data, unsigned int data_length)
 {
-
     memcpy(sharedBuffer, data, data_length);
     sharedBufferLen = data_length;
-    printf("Received data from reader : \n");
-    for(int i = 0x00; i < sharedBufferLen; i++)
-    {
-        printf("%02X ", sharedBuffer[i]);
-    }
-    printf("\n\n");
-
-    fflush(stdout);
     (*onDataCallback)();
 }
 
 void hceResponse(){
-    printf("Response sent : \n");
-    for(int i = 0x00; i < sharedBufferLen; i++)
-    {
-        printf("%02X ", sharedBuffer[i]);
-    }
-    printf("\n\n");
-    fflush(stdout);
     nfcHce_sendCommand(sharedBuffer, sharedBufferLen);
 
 }
@@ -85,15 +69,19 @@ void startEmulation(){
     unsigned int addInfoLen = *(unsigned int *)&sharedBuffer[8 + uidLen];
     if(cardTech == 2){
         techMask = 0x02;
+        setConfigValue("HOST_LISTEN_TECH_MASK", &techMask, sizeof (techMask));
+        nfcManager_doInitialize();
+        nfcHce_registerHceCallback(&g_HceCB);
+        nfcManager_setConfig(0x39, uidLen, &sharedBuffer[8]);
+        nfcManager_setConfig(0x3A, 4, &sharedBuffer[12 + uidLen + 4]);
+
     }else if(cardTech == 1){
         techMask = 0x01;
+        setConfigValue("HOST_LISTEN_TECH_MASK", &techMask, sizeof (techMask));
+        nfcManager_doInitialize();
+        nfcHce_registerHceCallback(&g_HceCB);
     }
 
-    setConfigValue("HOST_LISTEN_TECH_MASK", &techMask, sizeof (techMask));
-    nfcManager_doInitialize();
-    nfcHce_registerHceCallback(&g_HceCB);
-    nfcManager_setConfig(0x39, uidLen, &sharedBuffer[8]);
-    nfcManager_setConfig(0x3A, 4, &sharedBuffer[12 + uidLen + 4]);
     nfcManager_enableDiscovery(0x00, 0, 1, 0);
 
 }

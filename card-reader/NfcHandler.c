@@ -13,14 +13,19 @@ pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 
 nfcTagCallback_t g_TagCB;
 nfc_tag_info_t g_tagInfos;
+
 void (*onCardDepart)();
+
 void (*onCardArrive)();
 
-void onTagArrival(nfc_tag_info_t *pTagInfo){
+void onTagArrival(nfc_tag_info_t *pTagInfo) {
     g_tagInfos = *pTagInfo;
     unsigned int additionalInfoLen = 0;
-    if(g_tagInfos.technology == 2){
+    if (g_tagInfos.technology == 2) {
         additionalInfoLen = 11;
+
+    } else if (g_tagInfos.technology == 1) {
+        additionalInfoLen= 3;
     }
     memcpy(&sharedBuffer[0], &g_tagInfos.technology, 4);
     memcpy(&sharedBuffer[4], &g_tagInfos.uid_length, 4);
@@ -32,24 +37,23 @@ void onTagArrival(nfc_tag_info_t *pTagInfo){
     (*onCardArrive)();
 }
 
-void setOnCardDepartCallback(void (*ptr)()){
+void setOnCardDepartCallback(void (*ptr)()) {
     onCardDepart = ptr;
 }
 
 
-void onTagDeparture(void){
+void onTagDeparture(void) {
     (*onCardDepart)();
 }
 
-void setOnCardArrivalCallback(void (*ptr)()){
+void setOnCardArrivalCallback(void (*ptr)()) {
     onCardArrive = ptr;
 }
 
-unsigned int sendTagCommand(unsigned char* result, unsigned int maxLen, unsigned int timeout){
+unsigned int sendTagCommand(unsigned char *result, unsigned int maxLen, unsigned int timeout) {
     unsigned int resultLen = 0;
     printf("Received data from reader : \n");
-    for(int i = 0x00; i < sharedBufferLen; i++)
-    {
+    for (int i = 0x00; i < sharedBufferLen; i++) {
         printf("%02X ", sharedBuffer[i]);
     }
     printf("\n\n");
@@ -57,8 +61,7 @@ unsigned int sendTagCommand(unsigned char* result, unsigned int maxLen, unsigned
     resultLen = nfcTag_transceive(g_tagInfos.handle, sharedBuffer, sharedBufferLen, result, maxLen, timeout);
 
     printf("Response sent : \n");
-    for(int i = 0x00; i < resultLen; i++)
-    {
+    for (int i = 0x00; i < resultLen; i++) {
         printf("%02X ", result[i]);
     }
 
@@ -70,7 +73,7 @@ unsigned int sendTagCommand(unsigned char* result, unsigned int maxLen, unsigned
 }
 
 
-void enableReader(){
+void enableReader() {
     g_TagCB.onTagArrival = onTagArrival;
     g_TagCB.onTagDeparture = onTagDeparture;
     nfcManager_doDeinitialize();
