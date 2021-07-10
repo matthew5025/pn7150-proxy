@@ -79,9 +79,10 @@ jobs:
     #    and modify them (or add more) to build your code if your project
     #    uses a compiled language
 
-    #- run: |
-    #   make bootstrap
-    #   make release
+    - run: |
+       cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+       cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
+
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v1
