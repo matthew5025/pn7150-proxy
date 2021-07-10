@@ -27,6 +27,7 @@ jobs:
       run: |
        git clone https://github.com/matthew5025/linux_libnfc-nci
        cd linux_libnfc-nci
+       ./bootstrap
        ./configure
        make
        sudo make install
