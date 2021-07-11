@@ -13,3 +13,4 @@ void startEmulation();
 void setOnDataCallback(void (*ptr)());
 void endEmulation();
 void setOnReaderGoneCallback(void (*ptr)());
+void setOnReaderArriveCallback(void (*ptr)());

@@ -12,3 +12,4 @@ void enableReader();
 unsigned int sendTagCommand(unsigned char* result, unsigned int maxLen, unsigned int timeout);
 void setOnCardDepartCallback(void (*ptr)());
 void setOnCardArrivalCallback(void (*ptr)());
+void onReaderArrival();

@@ -17,6 +17,7 @@ unsigned char HCE_response[255];
 unsigned char HCE_response_len;
 void (*onDataCallback)();
 void (*onReaderGoneCallback)();
+void (*onReaderArriveCallback)();
 
 void setOnDataCallback(void (*ptr)()){
     onDataCallback = ptr;
@@ -24,6 +25,10 @@ void setOnDataCallback(void (*ptr)()){
 
 void setOnReaderGoneCallback(void (*ptr)()){
     onReaderGoneCallback = ptr;
+}
+
+void setOnReaderArriveCallback(void (*ptr)()){
+    onReaderArriveCallback = ptr;
 }
 
 void onHostCardEmulationActivated(unsigned char mode)
@@ -41,6 +46,7 @@ void onHostCardEmulationActivated(unsigned char mode)
         default: printf(" Remote reader type is unknown\n");
             break;
     }
+    (*onReaderArriveCallback)();
 }
 
 void onHostCardEmulationDeactivated()
@@ -80,13 +86,21 @@ void startEmulation(){
         nfcHce_registerHceCallback(&g_HceCB);
         nfcManager_setConfig(0x39, uidLen, &sharedBuffer[8]);
         nfcManager_setConfig(0x3A, 4, &sharedBuffer[12 + uidLen + 4]);
-
+        printf("Emulation Started. Card Type: ISO14443B ");
     }else if(cardTech == 1){
         techMask = 0x01;
         setConfigValue("HOST_LISTEN_TECH_MASK", &techMask, sizeof (techMask));
         nfcManager_doInitialize();
         nfcHce_registerHceCallback(&g_HceCB);
+        printf("Emulation Started. Card Type: ISO14443A ");
+
     }
+
+    printf("Card UID: ");
+    for(int i = 0; i< uidLen; i++){
+        printf("%02X", sharedBuffer[8 + i]);
+    }
+    printf("\n");
 
     nfcManager_enableDiscovery(0x00, 0, 1, 0);
 
@@ -96,4 +110,5 @@ void endEmulation(){
     nfcHce_deregisterHceCallback();
     nfcManager_disableDiscovery();
     nfcManager_doDeinitialize();
+    printf("Emulation Stopped.\n");
 }

@@ -16,7 +16,7 @@
 enum MessageType {
     ECHO = 0x01,
     ECHO_REPLY = 0x02,
-    TAG_INFO_REQ = 0x03,
+    READER_ARRIVAL = 0x03,
     TAG_INFO_REPLY = 0x04,
     TAG_CMD = 0x05,
     TAG_CMD_REPLY = 0x06,
@@ -65,7 +65,6 @@ void sendTagCommand() {
     sendMessage();
 }
 
-
 int initComms() {
     setOnDataCallback(sendTagCommand);
     outputMessage.type = ECHO;
@@ -81,6 +80,12 @@ void onReaderGone(){
     sendMessage();
 }
 
+void onReaderArrive(){
+    outputMessage.type = READER_ARRIVAL;
+    outputMessage.length = 0;
+    sendMessage();
+}
+
 void messageHandler() {
     switch (inputMessage.type) {
         case ECHO:
@@ -92,6 +97,7 @@ void messageHandler() {
             if (memcmp(inputMessage.message, outputMessage.message, sizeof(outputMessage.message)) == 0) {
                 printf("Communications established.\r\n");
                 setOnReaderGoneCallback(onReaderGone);
+                setOnReaderArriveCallback(onReaderArrive);
                 return;
             }
         case TAG_INFO_REPLY:
