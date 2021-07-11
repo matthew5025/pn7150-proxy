@@ -16,9 +16,14 @@ unsigned char g_readerMode = 0x00;
 unsigned char HCE_response[255];
 unsigned char HCE_response_len;
 void (*onDataCallback)();
+void (*onReaderGoneCallback)();
 
 void setOnDataCallback(void (*ptr)()){
     onDataCallback = ptr;
+}
+
+void setOnReaderGoneCallback(void (*ptr)()){
+    onReaderGoneCallback = ptr;
 }
 
 void onHostCardEmulationActivated(unsigned char mode)
@@ -42,6 +47,7 @@ void onHostCardEmulationDeactivated()
 {
     printf("Card deactivated\n");
     g_readerMode = 0x00;
+    (*onReaderGoneCallback)();
 }
 
 

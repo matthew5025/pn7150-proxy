@@ -75,6 +75,11 @@ int initComms() {
     return 0;
 }
 
+void onReaderGone(){
+    outputMessage.type = READER_GONE;
+    outputMessage.length = 0;
+    sendMessage();
+}
 
 void messageHandler() {
     switch (inputMessage.type) {
@@ -86,6 +91,7 @@ void messageHandler() {
         case ECHO_REPLY:
             if (memcmp(inputMessage.message, outputMessage.message, sizeof(outputMessage.message)) == 0) {
                 printf("Communications established.\r\n");
+                setOnReaderGoneCallback(onReaderGone);
                 return;
             }
         case TAG_INFO_REPLY:

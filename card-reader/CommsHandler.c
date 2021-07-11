@@ -77,6 +77,8 @@ void messageHandler() {
             outputMessage.length = sendTagCommand(outputMessage.message, sizeof (outputMessage.message), 500);
             outputMessage.type = TAG_CMD_REPLY;
             break;
+        default:
+            return;
     }
     sendMessage();
 }

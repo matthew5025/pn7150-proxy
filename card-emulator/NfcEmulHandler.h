@@ -12,3 +12,4 @@ unsigned int sharedBufferLen;
 void startEmulation();
 void setOnDataCallback(void (*ptr)());
 void endEmulation();
+void setOnReaderGoneCallback(void (*ptr)());

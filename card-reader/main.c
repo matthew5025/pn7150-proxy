@@ -47,9 +47,10 @@ int main(int argc, char const *argv[]) {
             perror("accept");
             continue;
         }
+        printf("Connected\r\n");
+        setSocket(new_socket);
+
         while (1) {
-            printf("Connected\r\n");
-            setSocket(new_socket);
             int response = readSocket();
             if (response == -1) {
                 close(new_socket);
