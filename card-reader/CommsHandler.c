@@ -7,13 +7,15 @@
 #include <sys/socket.h>
 #include "CommsHandler.h"
 #include "NfcHandler.h"
+#include "FileLogger.h"
 #include <stdint.h>
 #include <stdio.h>
+#include <linux_nfc_api.h>
 
 enum MessageType{
     ECHO = 0x01,
     ECHO_REPLY = 0x02,
-    TAG_INFO_REQ = 0x03,
+    READER_ARRIVAL = 0x03,
     TAG_INFO_REPLY = 0x04,
     TAG_CMD = 0x05,
     TAG_CMD_REPLY = 0x06,
@@ -70,17 +72,24 @@ void messageHandler() {
             enableReader();
             setOnCardDepartCallback(sendCardDeparted);
             setOnCardArrivalCallback(sendCardArrival);
-            break;
+            sendMessage();
+            return;
         case TAG_CMD:
             sharedBufferLen = inputMessage.length;
             memcpy(sharedBuffer, inputMessage.message, sharedBufferLen);
             outputMessage.length = sendTagCommand(outputMessage.message, sizeof (outputMessage.message), 500);
             outputMessage.type = TAG_CMD_REPLY;
-            break;
+            sendMessage();
+            return;
+        case READER_ARRIVAL:
+            onReaderArrival();
+            return;
+        case READER_GONE:
+            closeFile();
+            return;
         default:
             return;
     }
-    sendMessage();
 }
 
 
@@ -89,6 +98,7 @@ int readSocket() {
     while (bytesRead < 5) {
         long messageLen = recv(comSocket, inBuffer + bytesRead, 1024 - bytesRead, 0);
         if (messageLen < 1) {
+            nfcManager_doDeinitialize();
             return -1;
         }
         bytesRead = messageLen + bytesRead;
@@ -103,6 +113,7 @@ int readSocket() {
         while (remainingBytes > 0) {
             long messageLen = recv(comSocket, inBuffer + bytesRead, remainingBytes, 0);
             if (messageLen < 1) {
+                nfcManager_doDeinitialize();
                 return -1;
             }
             bytesRead = messageLen + bytesRead;
@@ -113,6 +124,7 @@ int readSocket() {
         messageHandler();
     } else {
         printf("Invalid header.\n");
+        nfcManager_doDeinitialize();
         return -1;
     }
     return 0;
