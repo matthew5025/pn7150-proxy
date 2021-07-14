@@ -1,0 +1,3 @@
+C:/Users/natsa/Documents/GitHub/pn7150-proxy/card_emulator_usb/cmake-build-debug/CMakeFiles/card_emulator_usb.dir
+C:/Users/natsa/Documents/GitHub/pn7150-proxy/card_emulator_usb/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/natsa/Documents/GitHub/pn7150-proxy/card_emulator_usb/cmake-build-debug/CMakeFiles/rebuild_cache.dir

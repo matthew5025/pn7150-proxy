@@ -7,5 +7,10 @@
 
 #endif //CARD_READER_COMMSHANDLER_H
 
+struct CompanionStruct{
+    char test[10];
+};
+
 void setSocket(int in_sock);
 int readSocket();
+struct CompanionStruct companionStruct;
