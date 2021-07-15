@@ -6,5 +6,5 @@ C_FLAGS = -g   -std=gnu99
 
 C_DEFINES = -DCARDEMU_RAW_EXCHANGE -DCARDEMU_SUPPORT
 
-C_INCLUDES = -I/tmp/tmp.0l2CKXr8AY/TML/inc -I/tmp/tmp.0l2CKXr8AY/NfcLibrary/inc -I/tmp/tmp.0l2CKXr8AY/NfcLibrary/NxpNci/inc -I/tmp/tmp.0l2CKXr8AY/NfcLibrary/NdefLibrary/inc -I/tmp/tmp.0l2CKXr8AY/NfcTask/inc 
+C_INCLUDES = -I/tmp/tmp.0l2CKXr8AY/TML/inc -I/tmp/tmp.0l2CKXr8AY/NfcLibrary/inc -I/tmp/tmp.0l2CKXr8AY/NfcLibrary/NxpNci/inc -I/tmp/tmp.0l2CKXr8AY/NfcLibrary/NdefLibrary/inc -I/tmp/tmp.0l2CKXr8AY/NfcTask/inc -I/tmp/tmp.0l2CKXr8AY/Application 
 

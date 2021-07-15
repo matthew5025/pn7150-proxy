@@ -382,9 +382,48 @@ CMakeFiles/card_emulator_usb.dir/NfcTask/src/nfc_task.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/card_emulator_usb.dir/NfcTask/src/nfc_task.c.s"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /tmp/tmp.0l2CKXr8AY/NfcTask/src/nfc_task.c -o CMakeFiles/card_emulator_usb.dir/NfcTask/src/nfc_task.c.s
 
+CMakeFiles/card_emulator_usb.dir/Application/EmulationCommsHandler.c.o: CMakeFiles/card_emulator_usb.dir/flags.make
+CMakeFiles/card_emulator_usb.dir/Application/EmulationCommsHandler.c.o: ../Application/EmulationCommsHandler.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/tmp/tmp.0l2CKXr8AY/cmake-build-debug-remote-host-ubuntu/CMakeFiles --progress-num=$(CMAKE_PROGRESS_26) "Building C object CMakeFiles/card_emulator_usb.dir/Application/EmulationCommsHandler.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/card_emulator_usb.dir/Application/EmulationCommsHandler.c.o   -c /tmp/tmp.0l2CKXr8AY/Application/EmulationCommsHandler.c
+
+CMakeFiles/card_emulator_usb.dir/Application/EmulationCommsHandler.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/card_emulator_usb.dir/Application/EmulationCommsHandler.c.i"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /tmp/tmp.0l2CKXr8AY/Application/EmulationCommsHandler.c > CMakeFiles/card_emulator_usb.dir/Application/EmulationCommsHandler.c.i
+
+CMakeFiles/card_emulator_usb.dir/Application/EmulationCommsHandler.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/card_emulator_usb.dir/Application/EmulationCommsHandler.c.s"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /tmp/tmp.0l2CKXr8AY/Application/EmulationCommsHandler.c -o CMakeFiles/card_emulator_usb.dir/Application/EmulationCommsHandler.c.s
+
+CMakeFiles/card_emulator_usb.dir/Application/NfcEmulHandler.c.o: CMakeFiles/card_emulator_usb.dir/flags.make
+CMakeFiles/card_emulator_usb.dir/Application/NfcEmulHandler.c.o: ../Application/NfcEmulHandler.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/tmp/tmp.0l2CKXr8AY/cmake-build-debug-remote-host-ubuntu/CMakeFiles --progress-num=$(CMAKE_PROGRESS_27) "Building C object CMakeFiles/card_emulator_usb.dir/Application/NfcEmulHandler.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/card_emulator_usb.dir/Application/NfcEmulHandler.c.o   -c /tmp/tmp.0l2CKXr8AY/Application/NfcEmulHandler.c
+
+CMakeFiles/card_emulator_usb.dir/Application/NfcEmulHandler.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/card_emulator_usb.dir/Application/NfcEmulHandler.c.i"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /tmp/tmp.0l2CKXr8AY/Application/NfcEmulHandler.c > CMakeFiles/card_emulator_usb.dir/Application/NfcEmulHandler.c.i
+
+CMakeFiles/card_emulator_usb.dir/Application/NfcEmulHandler.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/card_emulator_usb.dir/Application/NfcEmulHandler.c.s"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /tmp/tmp.0l2CKXr8AY/Application/NfcEmulHandler.c -o CMakeFiles/card_emulator_usb.dir/Application/NfcEmulHandler.c.s
+
+CMakeFiles/card_emulator_usb.dir/Application/NfcEmulUsbHandler.c.o: CMakeFiles/card_emulator_usb.dir/flags.make
+CMakeFiles/card_emulator_usb.dir/Application/NfcEmulUsbHandler.c.o: ../Application/NfcEmulUsbHandler.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/tmp/tmp.0l2CKXr8AY/cmake-build-debug-remote-host-ubuntu/CMakeFiles --progress-num=$(CMAKE_PROGRESS_28) "Building C object CMakeFiles/card_emulator_usb.dir/Application/NfcEmulUsbHandler.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/card_emulator_usb.dir/Application/NfcEmulUsbHandler.c.o   -c /tmp/tmp.0l2CKXr8AY/Application/NfcEmulUsbHandler.c
+
+CMakeFiles/card_emulator_usb.dir/Application/NfcEmulUsbHandler.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/card_emulator_usb.dir/Application/NfcEmulUsbHandler.c.i"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /tmp/tmp.0l2CKXr8AY/Application/NfcEmulUsbHandler.c > CMakeFiles/card_emulator_usb.dir/Application/NfcEmulUsbHandler.c.i
+
+CMakeFiles/card_emulator_usb.dir/Application/NfcEmulUsbHandler.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/card_emulator_usb.dir/Application/NfcEmulUsbHandler.c.s"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /tmp/tmp.0l2CKXr8AY/Application/NfcEmulUsbHandler.c -o CMakeFiles/card_emulator_usb.dir/Application/NfcEmulUsbHandler.c.s
+
 CMakeFiles/card_emulator_usb.dir/Application/main.c.o: CMakeFiles/card_emulator_usb.dir/flags.make
 CMakeFiles/card_emulator_usb.dir/Application/main.c.o: ../Application/main.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/tmp/tmp.0l2CKXr8AY/cmake-build-debug-remote-host-ubuntu/CMakeFiles --progress-num=$(CMAKE_PROGRESS_26) "Building C object CMakeFiles/card_emulator_usb.dir/Application/main.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/tmp/tmp.0l2CKXr8AY/cmake-build-debug-remote-host-ubuntu/CMakeFiles --progress-num=$(CMAKE_PROGRESS_29) "Building C object CMakeFiles/card_emulator_usb.dir/Application/main.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/card_emulator_usb.dir/Application/main.c.o   -c /tmp/tmp.0l2CKXr8AY/Application/main.c
 
 CMakeFiles/card_emulator_usb.dir/Application/main.c.i: cmake_force
@@ -422,6 +461,9 @@ card_emulator_usb_OBJECTS = \
 "CMakeFiles/card_emulator_usb.dir/NfcLibrary/NxpNci/src/NxpNci.c.o" \
 "CMakeFiles/card_emulator_usb.dir/NfcTask/src/ndef_helper.c.o" \
 "CMakeFiles/card_emulator_usb.dir/NfcTask/src/nfc_task.c.o" \
+"CMakeFiles/card_emulator_usb.dir/Application/EmulationCommsHandler.c.o" \
+"CMakeFiles/card_emulator_usb.dir/Application/NfcEmulHandler.c.o" \
+"CMakeFiles/card_emulator_usb.dir/Application/NfcEmulUsbHandler.c.o" \
 "CMakeFiles/card_emulator_usb.dir/Application/main.c.o"
 
 # External object files for target card_emulator_usb
@@ -452,10 +494,13 @@ card_emulator_usb: CMakeFiles/card_emulator_usb.dir/NfcLibrary/NdefLibrary/src/T
 card_emulator_usb: CMakeFiles/card_emulator_usb.dir/NfcLibrary/NxpNci/src/NxpNci.c.o
 card_emulator_usb: CMakeFiles/card_emulator_usb.dir/NfcTask/src/ndef_helper.c.o
 card_emulator_usb: CMakeFiles/card_emulator_usb.dir/NfcTask/src/nfc_task.c.o
+card_emulator_usb: CMakeFiles/card_emulator_usb.dir/Application/EmulationCommsHandler.c.o
+card_emulator_usb: CMakeFiles/card_emulator_usb.dir/Application/NfcEmulHandler.c.o
+card_emulator_usb: CMakeFiles/card_emulator_usb.dir/Application/NfcEmulUsbHandler.c.o
 card_emulator_usb: CMakeFiles/card_emulator_usb.dir/Application/main.c.o
 card_emulator_usb: CMakeFiles/card_emulator_usb.dir/build.make
 card_emulator_usb: CMakeFiles/card_emulator_usb.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/tmp/tmp.0l2CKXr8AY/cmake-build-debug-remote-host-ubuntu/CMakeFiles --progress-num=$(CMAKE_PROGRESS_27) "Linking C executable card_emulator_usb"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/tmp/tmp.0l2CKXr8AY/cmake-build-debug-remote-host-ubuntu/CMakeFiles --progress-num=$(CMAKE_PROGRESS_30) "Linking C executable card_emulator_usb"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/card_emulator_usb.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

@@ -1,4 +1,7 @@
 file(REMOVE_RECURSE
+  "CMakeFiles/card_emulator_usb.dir/Application/EmulationCommsHandler.c.o"
+  "CMakeFiles/card_emulator_usb.dir/Application/NfcEmulHandler.c.o"
+  "CMakeFiles/card_emulator_usb.dir/Application/NfcEmulUsbHandler.c.o"
   "CMakeFiles/card_emulator_usb.dir/Application/main.c.o"
   "CMakeFiles/card_emulator_usb.dir/NfcLibrary/NdefLibrary/src/P2P_NDEF.c.o"
   "CMakeFiles/card_emulator_usb.dir/NfcLibrary/NdefLibrary/src/RW_NDEF.c.o"

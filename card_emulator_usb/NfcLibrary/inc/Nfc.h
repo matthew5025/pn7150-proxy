@@ -17,6 +17,8 @@
 /*
  * Status code definition used as API returned values
  */
+#include <stdbool.h>
+
 #define NFC_SUCCESS          0
 #define NFC_ERROR            1
 

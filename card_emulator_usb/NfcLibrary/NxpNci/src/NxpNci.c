@@ -160,7 +160,14 @@ void NxpNci_ProcessCardMode(NxpNci_RfIntf_t RfIntf)
 
     while(NxpNci_WaitForReception(Answer, sizeof(Answer), &AnswerSize, TIMEOUT_2S) == NXPNCI_SUCCESS)
     {
-    	/* is RF_DEACTIVATE_NTF ? */
+        PRINTF("NCI: ");
+        for(int i = 0; i < AnswerSize; i++){
+            PRINTF("%02x ", Answer[i]);
+        }
+
+        PRINTF("\r\n");
+
+        /* is RF_DEACTIVATE_NTF ? */
         if((Answer[0] == 0x61) && (Answer[1] == 0x06))
         {
             if(FirstCmd)
@@ -190,6 +197,13 @@ void NxpNci_ProcessCardMode(NxpNci_RfIntf_t RfIntf)
             Cmd[1] = (CmdSize & 0xFF00) >> 8;
             Cmd[2] = CmdSize & 0x00FF;
 
+            PRINTF("RSP: ");
+            for(int i = 0; i < CmdSize+3; i++){
+                PRINTF("%02x ", Cmd[i]);
+            }
+            PRINTF("\r\n");
+
+
             NxpNci_HostTransceive(Cmd, CmdSize+3, Answer, sizeof(Answer), &AnswerSize);
         }
         FirstCmd = false;
@@ -198,20 +212,54 @@ void NxpNci_ProcessCardMode(NxpNci_RfIntf_t RfIntf)
 
 bool NxpNci_CardModeReceive (unsigned char *pData, unsigned char *pDataSize)
 {
+    uint8_t Answer[MAX_NCI_FRAME_SIZE];
+    uint16_t AnswerSize;
+    uint8_t NCIStopDiscovery[] = {0x21, 0x06, 0x01, 0x00};
+    bool FirstCmd = true;
     bool status = NXPNCI_ERROR;
     uint8_t Ans[MAX_NCI_FRAME_SIZE];
     uint16_t AnsSize;
 
-    NxpNci_WaitForReception(Ans, sizeof(Ans), &AnsSize, TIMEOUT_2S);
+    /* Reset Card emulation state */
+    T4T_NDEF_EMU_Reset();
 
-    /* Is data packet ? */
-    if ((Ans[0] == 0x00) && (Ans[1] == 0x00))
+    while(NxpNci_WaitForReception(Answer, sizeof(Answer), &AnswerSize, TIMEOUT_2S) == NXPNCI_SUCCESS)
     {
-        *pDataSize = Ans[2];
-        memcpy(pData, &Ans[3], *pDataSize);
-        status = NXPNCI_SUCCESS;
-    }
 
+        PRINTF("NCI: ");
+        for(int i = 0; i < AnswerSize; i++){
+            PRINTF("%02x ", Answer[i]);
+        }
+
+
+        /* is RF_DEACTIVATE_NTF ? */
+        if((Answer[0] == 0x61) && (Answer[1] == 0x06))
+        {
+            if(FirstCmd)
+            {
+                /* Restart the discovery loop */
+                NxpNci_HostTransceive(NCIStopDiscovery, sizeof(NCIStopDiscovery), Answer, sizeof(Answer), &AnswerSize);
+                do
+                {
+                    if ((Answer[0] == 0x41) && (Answer[1] == 0x06)) break;
+                    NxpNci_WaitForReception(Answer, sizeof(Answer), &AnswerSize, TIMEOUT_100MS);
+                } while (AnswerSize != 0);
+                NxpNci_HostTransceive(NCIStartDiscovery, NCIStartDiscovery_length, Answer, sizeof(Answer), &AnswerSize);
+            }
+            /* Come back to discovery state */
+            break;
+        }
+            /* is DATA_PACKET ? */
+        else if((Answer[0] == 0x00) && (Answer[1] == 0x00))
+        {
+            /* DATA_PACKET */
+            *pDataSize = Answer[2];
+            memcpy(pData, &Answer[3], *pDataSize);
+            status = NXPNCI_SUCCESS;
+            return status;
+        }
+        FirstCmd = false;
+    }
     return status;
 }
 
@@ -221,6 +269,14 @@ bool NxpNci_CardModeSend (unsigned char *pData, unsigned char DataSize)
     uint8_t Cmd[MAX_NCI_FRAME_SIZE];
     uint8_t Ans[MAX_NCI_FRAME_SIZE];
     uint16_t AnsSize;
+
+    PRINTF("SEND (%d) : ", DataSize);
+    for(int i = 0; i < DataSize; i++){
+        PRINTF("%02x ", pData[i]);
+    }
+
+    PRINTF("\r\n");
+
 
     /* Compute and send DATA_PACKET */
     Cmd[0] = 0x00;

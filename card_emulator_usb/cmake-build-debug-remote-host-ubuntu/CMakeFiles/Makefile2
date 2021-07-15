@@ -74,12 +74,12 @@ clean: CMakeFiles/card_emulator_usb.dir/clean
 CMakeFiles/card_emulator_usb.dir/all:
 	$(MAKE) -f CMakeFiles/card_emulator_usb.dir/build.make CMakeFiles/card_emulator_usb.dir/depend
 	$(MAKE) -f CMakeFiles/card_emulator_usb.dir/build.make CMakeFiles/card_emulator_usb.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/tmp/tmp.0l2CKXr8AY/cmake-build-debug-remote-host-ubuntu/CMakeFiles --progress-num=1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27 "Built target card_emulator_usb"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/tmp/tmp.0l2CKXr8AY/cmake-build-debug-remote-host-ubuntu/CMakeFiles --progress-num=1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30 "Built target card_emulator_usb"
 .PHONY : CMakeFiles/card_emulator_usb.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/card_emulator_usb.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /tmp/tmp.0l2CKXr8AY/cmake-build-debug-remote-host-ubuntu/CMakeFiles 27
+	$(CMAKE_COMMAND) -E cmake_progress_start /tmp/tmp.0l2CKXr8AY/cmake-build-debug-remote-host-ubuntu/CMakeFiles 30
 	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/card_emulator_usb.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /tmp/tmp.0l2CKXr8AY/cmake-build-debug-remote-host-ubuntu/CMakeFiles 0
 .PHONY : CMakeFiles/card_emulator_usb.dir/rule

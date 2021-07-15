@@ -12,4 +12,4 @@
 *                          arising from its use.
 */
 
-void task_nfc(void);
+_Noreturn void task_nfc(void);

@@ -6,28 +6,6 @@
 
 #IncludeRegexTransform: 
 
-../NfcLibrary/NdefLibrary/inc/P2P_NDEF.h
-
-../NfcLibrary/NdefLibrary/inc/RW_NDEF.h
-
-../NfcLibrary/NdefLibrary/inc/RW_NDEF_T3T.h
-
-../NfcLibrary/NdefLibrary/inc/T4T_NDEF_emu.h
-
-../NfcLibrary/NxpNci/inc/NxpNci.h
-Nfc.h
--
-T4T_NDEF_emu.h
--
-P2P_NDEF.h
--
-RW_NDEF.h
--
-RW_NDEF_T3T.h
--
-stdio.h
--
-
 ../NfcLibrary/inc/Nfc.h
 
 ../NfcTask/inc/ndef_helper.h
@@ -59,6 +37,4 @@ Nfc.h
 -
 ndef_helper.h
 -
-NxpNci.h
-/tmp/tmp.0l2CKXr8AY/NfcTask/src/NxpNci.h
 

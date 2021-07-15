@@ -51,6 +51,7 @@
 					<Add directory="/tmp/tmp.0l2CKXr8AY/NfcLibrary/NxpNci/inc"/>
 					<Add directory="/tmp/tmp.0l2CKXr8AY/NfcLibrary/NdefLibrary/inc"/>
 					<Add directory="/tmp/tmp.0l2CKXr8AY/NfcTask/inc"/>
+					<Add directory="/tmp/tmp.0l2CKXr8AY/Application"/>
 					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/9/include"/>
 					<Add directory="/usr/local/include"/>
 					<Add directory="/usr/include/x86_64-linux-gnu"/>
@@ -77,6 +78,7 @@
 					<Add directory="/tmp/tmp.0l2CKXr8AY/NfcLibrary/NxpNci/inc"/>
 					<Add directory="/tmp/tmp.0l2CKXr8AY/NfcLibrary/NdefLibrary/inc"/>
 					<Add directory="/tmp/tmp.0l2CKXr8AY/NfcTask/inc"/>
+					<Add directory="/tmp/tmp.0l2CKXr8AY/Application"/>
 					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/9/include"/>
 					<Add directory="/usr/local/include"/>
 					<Add directory="/usr/include/x86_64-linux-gnu"/>
@@ -90,6 +92,24 @@
 				</MakeCommands>
 			</Target>
 		</Build>
+		<Unit filename="/tmp/tmp.0l2CKXr8AY/Application/EmulationCommsHandler.c">
+			<Option target="card_emulator_usb"/>
+		</Unit>
+		<Unit filename="/tmp/tmp.0l2CKXr8AY/Application/EmulationCommsHandler.h">
+			<Option target="card_emulator_usb"/>
+		</Unit>
+		<Unit filename="/tmp/tmp.0l2CKXr8AY/Application/NfcEmulHandler.c">
+			<Option target="card_emulator_usb"/>
+		</Unit>
+		<Unit filename="/tmp/tmp.0l2CKXr8AY/Application/NfcEmulHandler.h">
+			<Option target="card_emulator_usb"/>
+		</Unit>
+		<Unit filename="/tmp/tmp.0l2CKXr8AY/Application/NfcEmulUsbHandler.c">
+			<Option target="card_emulator_usb"/>
+		</Unit>
+		<Unit filename="/tmp/tmp.0l2CKXr8AY/Application/NfcEmulUsbHandler.h">
+			<Option target="card_emulator_usb"/>
+		</Unit>
 		<Unit filename="/tmp/tmp.0l2CKXr8AY/Application/main.c">
 			<Option target="card_emulator_usb"/>
 		</Unit>

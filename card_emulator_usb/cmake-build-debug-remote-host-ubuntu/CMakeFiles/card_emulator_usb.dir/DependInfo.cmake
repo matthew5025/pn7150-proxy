@@ -4,6 +4,9 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_C
+  "/tmp/tmp.0l2CKXr8AY/Application/EmulationCommsHandler.c" "/tmp/tmp.0l2CKXr8AY/cmake-build-debug-remote-host-ubuntu/CMakeFiles/card_emulator_usb.dir/Application/EmulationCommsHandler.c.o"
+  "/tmp/tmp.0l2CKXr8AY/Application/NfcEmulHandler.c" "/tmp/tmp.0l2CKXr8AY/cmake-build-debug-remote-host-ubuntu/CMakeFiles/card_emulator_usb.dir/Application/NfcEmulHandler.c.o"
+  "/tmp/tmp.0l2CKXr8AY/Application/NfcEmulUsbHandler.c" "/tmp/tmp.0l2CKXr8AY/cmake-build-debug-remote-host-ubuntu/CMakeFiles/card_emulator_usb.dir/Application/NfcEmulUsbHandler.c.o"
   "/tmp/tmp.0l2CKXr8AY/Application/main.c" "/tmp/tmp.0l2CKXr8AY/cmake-build-debug-remote-host-ubuntu/CMakeFiles/card_emulator_usb.dir/Application/main.c.o"
   "/tmp/tmp.0l2CKXr8AY/NfcLibrary/NdefLibrary/src/P2P_NDEF.c" "/tmp/tmp.0l2CKXr8AY/cmake-build-debug-remote-host-ubuntu/CMakeFiles/card_emulator_usb.dir/NfcLibrary/NdefLibrary/src/P2P_NDEF.c.o"
   "/tmp/tmp.0l2CKXr8AY/NfcLibrary/NdefLibrary/src/RW_NDEF.c" "/tmp/tmp.0l2CKXr8AY/cmake-build-debug-remote-host-ubuntu/CMakeFiles/card_emulator_usb.dir/NfcLibrary/NdefLibrary/src/RW_NDEF.c.o"
@@ -46,6 +49,7 @@ set(CMAKE_C_TARGET_INCLUDE_PATH
   "../NfcLibrary/NxpNci/inc"
   "../NfcLibrary/NdefLibrary/inc"
   "../NfcTask/inc"
+  "../Application"
   )
 
 # Targets to which this target links.

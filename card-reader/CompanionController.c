@@ -7,6 +7,6 @@
 #include "CommsHandler.h"
 
 int threadStart(void* thr_data){
-    printf("%s", (com *)thr_data);
+    printf("%s", (char *)thr_data);
     return 0;
 }

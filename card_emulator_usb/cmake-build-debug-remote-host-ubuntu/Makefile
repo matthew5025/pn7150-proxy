@@ -123,6 +123,87 @@ card_emulator_usb/fast:
 	$(MAKE) -f CMakeFiles/card_emulator_usb.dir/build.make CMakeFiles/card_emulator_usb.dir/build
 .PHONY : card_emulator_usb/fast
 
+Application/EmulationCommsHandler.o: Application/EmulationCommsHandler.c.o
+
+.PHONY : Application/EmulationCommsHandler.o
+
+# target to build an object file
+Application/EmulationCommsHandler.c.o:
+	$(MAKE) -f CMakeFiles/card_emulator_usb.dir/build.make CMakeFiles/card_emulator_usb.dir/Application/EmulationCommsHandler.c.o
+.PHONY : Application/EmulationCommsHandler.c.o
+
+Application/EmulationCommsHandler.i: Application/EmulationCommsHandler.c.i
+
+.PHONY : Application/EmulationCommsHandler.i
+
+# target to preprocess a source file
+Application/EmulationCommsHandler.c.i:
+	$(MAKE) -f CMakeFiles/card_emulator_usb.dir/build.make CMakeFiles/card_emulator_usb.dir/Application/EmulationCommsHandler.c.i
+.PHONY : Application/EmulationCommsHandler.c.i
+
+Application/EmulationCommsHandler.s: Application/EmulationCommsHandler.c.s
+
+.PHONY : Application/EmulationCommsHandler.s
+
+# target to generate assembly for a file
+Application/EmulationCommsHandler.c.s:
+	$(MAKE) -f CMakeFiles/card_emulator_usb.dir/build.make CMakeFiles/card_emulator_usb.dir/Application/EmulationCommsHandler.c.s
+.PHONY : Application/EmulationCommsHandler.c.s
+
+Application/NfcEmulHandler.o: Application/NfcEmulHandler.c.o
+
+.PHONY : Application/NfcEmulHandler.o
+
+# target to build an object file
+Application/NfcEmulHandler.c.o:
+	$(MAKE) -f CMakeFiles/card_emulator_usb.dir/build.make CMakeFiles/card_emulator_usb.dir/Application/NfcEmulHandler.c.o
+.PHONY : Application/NfcEmulHandler.c.o
+
+Application/NfcEmulHandler.i: Application/NfcEmulHandler.c.i
+
+.PHONY : Application/NfcEmulHandler.i
+
+# target to preprocess a source file
+Application/NfcEmulHandler.c.i:
+	$(MAKE) -f CMakeFiles/card_emulator_usb.dir/build.make CMakeFiles/card_emulator_usb.dir/Application/NfcEmulHandler.c.i
+.PHONY : Application/NfcEmulHandler.c.i
+
+Application/NfcEmulHandler.s: Application/NfcEmulHandler.c.s
+
+.PHONY : Application/NfcEmulHandler.s
+
+# target to generate assembly for a file
+Application/NfcEmulHandler.c.s:
+	$(MAKE) -f CMakeFiles/card_emulator_usb.dir/build.make CMakeFiles/card_emulator_usb.dir/Application/NfcEmulHandler.c.s
+.PHONY : Application/NfcEmulHandler.c.s
+
+Application/NfcEmulUsbHandler.o: Application/NfcEmulUsbHandler.c.o
+
+.PHONY : Application/NfcEmulUsbHandler.o
+
+# target to build an object file
+Application/NfcEmulUsbHandler.c.o:
+	$(MAKE) -f CMakeFiles/card_emulator_usb.dir/build.make CMakeFiles/card_emulator_usb.dir/Application/NfcEmulUsbHandler.c.o
+.PHONY : Application/NfcEmulUsbHandler.c.o
+
+Application/NfcEmulUsbHandler.i: Application/NfcEmulUsbHandler.c.i
+
+.PHONY : Application/NfcEmulUsbHandler.i
+
+# target to preprocess a source file
+Application/NfcEmulUsbHandler.c.i:
+	$(MAKE) -f CMakeFiles/card_emulator_usb.dir/build.make CMakeFiles/card_emulator_usb.dir/Application/NfcEmulUsbHandler.c.i
+.PHONY : Application/NfcEmulUsbHandler.c.i
+
+Application/NfcEmulUsbHandler.s: Application/NfcEmulUsbHandler.c.s
+
+.PHONY : Application/NfcEmulUsbHandler.s
+
+# target to generate assembly for a file
+Application/NfcEmulUsbHandler.c.s:
+	$(MAKE) -f CMakeFiles/card_emulator_usb.dir/build.make CMakeFiles/card_emulator_usb.dir/Application/NfcEmulUsbHandler.c.s
+.PHONY : Application/NfcEmulUsbHandler.c.s
+
 Application/main.o: Application/main.c.o
 
 .PHONY : Application/main.o
@@ -834,6 +915,15 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
 	@echo "... card_emulator_usb"
+	@echo "... Application/EmulationCommsHandler.o"
+	@echo "... Application/EmulationCommsHandler.i"
+	@echo "... Application/EmulationCommsHandler.s"
+	@echo "... Application/NfcEmulHandler.o"
+	@echo "... Application/NfcEmulHandler.i"
+	@echo "... Application/NfcEmulHandler.s"
+	@echo "... Application/NfcEmulUsbHandler.o"
+	@echo "... Application/NfcEmulUsbHandler.i"
+	@echo "... Application/NfcEmulUsbHandler.s"
 	@echo "... Application/main.o"
 	@echo "... Application/main.i"
 	@echo "... Application/main.s"
