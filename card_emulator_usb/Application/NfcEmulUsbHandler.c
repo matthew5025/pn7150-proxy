@@ -4,119 +4,122 @@
 
 #include <Nfc.h>
 #include <tool.h>
+#include <time.h>
+#include <pthread.h>
+#include <asm-generic/errno.h>
+#include <tml_hid.h>
 #include "NfcEmulUsbHandler.h"
 
-cardEmulationCallbacks* callback;
-void emulDataTransfer (void)
-{
-    unsigned char OK[] = {0x90, 0x00};
-    unsigned char NOK[] = {0x6A, 0x82};
-    unsigned char Cmd[256];
-    unsigned char CmdSize;
+struct cardEmulationState ceState;
+NxpNci_RfIntf_t RfInterface;
+pthread_mutex_t waitForResponse;
+struct timespec timeoutTime;
 
-    while (1)
-    {
-        int state = NxpNci_CardModeReceive(Cmd, &CmdSize);
-        PRINTF("State: %d\r\n", state);
-        if(state == NFC_SUCCESS)
-        {
-            PRINTF("APDU: ");
-            for(int i = 0; i < CmdSize; i++){
-                PRINTF("%02x ", Cmd[i]);
-            }
+void waitForReader();
+void stopNfc();
+void startNfc();
 
-            printf("\n");
-
-            if(CmdSize < 4){
-                NxpNci_CardModeSend(NOK, sizeof(NOK));
-                continue;
-            }
-
-
-            memcpy(callback->sharedBuffer, Cmd, CmdSize);
-            unsigned int bufferSize = CmdSize;
-            memcpy(callback->sharedBufferLen, &bufferSize, sizeof (bufferSize));
-            (*callback->onDataReceived)();
-
-            if ((CmdSize >= 2) && (Cmd[0] == 0x00))
-            {
-                switch (Cmd[1])
-                {
-                    case 0xA4:
-                        PRINTF("Select File received\n");
-                        break;
-
-                    case 0xB0:
-                        PRINTF("Read Binary received\n");
-                        break;
-
-                    case 0xD0:
-                        PRINTF("Write Binary received\n");
-                        break;
-
-                    default:
-                        break;
-                }
-            }
-            sem_wait(&callback->mutex);
-            unsigned char dataLen = (unsigned char) *(callback->sharedBufferLen);
-            NxpNci_CardModeSend(callback->sharedBuffer, dataLen);
-
-        }
-        else
-        {
-            PRINTF("End of transaction\n");
-            return;
-        }
-    }
-
+void gotData(){
+    pthread_mutex_unlock(&waitForResponse);
 }
 
+void sendReceiveData(){
+    unsigned char OK[] = {0x90, 0x00};
+    unsigned char NOK[] = {0x6A, 0x82};
+    unsigned char CmdSize;
 
-int usbEmulThread(void* threadData){
-    NxpNci_RfIntf_t RfInterface;
-    callback = threadData;
-    unsigned mode = 0 | NXPNCI_MODE_CARDEMU;
+    while(NxpNci_CardModeReceive(ceState.buffer, &CmdSize) == NFC_SUCCESS){
+        PRINTF("APDU: ");
+        for(int i = 0; i < CmdSize; i++){
+            PRINTF("%02x ", ceState.buffer[i]);
+        }
+        PRINTF("\r\n");
 
+        if(CmdSize < 4){
+            NxpNci_CardModeSend(NOK, sizeof(NOK));
+            continue;
+        }
+
+            //ceState.bufferLen = (unsigned int*)CmdSize;
+            memcpy(ceState.bufferLen, &CmdSize, sizeof (CmdSize));
+            clock_gettime(CLOCK_REALTIME, &timeoutTime);
+            timeoutTime.tv_sec += 5;
+            (*ceState.sendData)();
+            int retVal = pthread_mutex_timedlock(&waitForResponse, &timeoutTime);
+            if(retVal == ETIMEDOUT){
+                PRINTF("End of transaction (timeout from server!)\n");
+                (*ceState.onReaderLeave)();
+                //timeoutCb(NULL);
+                tml_hid_Cancel();
+                return;
+            }else{
+                CmdSize = *(unsigned char*)ceState.bufferLen;
+                NxpNci_CardModeSend(ceState.buffer, CmdSize);
+            }
+        }
+
+    PRINTF("End of transaction\n");
+    (*ceState.onReaderLeave)();
+}
+
+void waitForReader(){
+    while(ceState.stopNfc == false){
+        while(NxpNci_DiscoveryCallback(&RfInterface) != NFC_SUCCESS);
+        (*ceState.onReaderArrive)();
+        pthread_mutex_trylock(&waitForResponse);
+        sendReceiveData();
+    }
+}
+
+void startNfc(){
     unsigned char DiscoveryTechnologies[] = { MODE_LISTEN | TECH_PASSIVE_NFCB};
+
+    /* Mode configuration according to the targeted modes of operation */
+    unsigned mode = 0 | NXPNCI_MODE_CARDEMU;
 
     /* Open connection to NXPNCI device */
     if (NxpNci_Connect() == NFC_ERROR) {
         PRINTF("Error: cannot connect to NXPNCI device\n");
+        return;
     }
 
     if (NxpNci_ConfigureSettings() == NFC_ERROR) {
         PRINTF("Error: cannot configure NXPNCI settings\n");
+        return;
     }
 
     if (NxpNci_ConfigureMode(mode) == NFC_ERROR)
     {
         PRINTF("Error: cannot configure NXPNCI\n");
+        return;
     }
 
     /* Start Discovery */
     if (NxpNci_StartDiscovery(DiscoveryTechnologies,sizeof(DiscoveryTechnologies)) != NFC_SUCCESS)
     {
         PRINTF("Error: cannot start discovery\n");
+        return;
     }
+    waitForReader();
+}
+
+void stopNfc(){
+    ceState.stopNfc = true;
+    //timeoutCb(NULL);
+    tml_hid_Cancel();
+    NxpNci_StopDiscovery();
+    NxpNci_Disconnect();
+}
 
 
-    while(1)
-    {
-        PRINTF("\nWAITING FOR DEVICE DISCOVERY\n");
-
-        /* Wait until a peer is discovered */
-        while(NxpNci_WaitForDiscoveryNotification(&RfInterface) != NFC_SUCCESS);
-
-        /* Is activated from remote T4T ? */
-        if ((RfInterface.Interface == INTF_ISODEP) && ((RfInterface.ModeTech & MODE_MASK) == MODE_LISTEN))
-        {
-            (*callback->onEmulationActivated)();
-            PRINTF(" - LISTEN MODE: Activated from remote Reader\n");
-            emulDataTransfer();
-            PRINTF("READER DISCONNECTED\n");
-            (*callback-> onEmulationDeactivated)();
-        }
-    }
-
+void* startUsbEmulation(void* args){
+    struct cardEmulationState* inputStruct = args;
+    ceState.onReaderArrive = inputStruct->onReaderArrive;
+    ceState.onReaderLeave = inputStruct->onReaderLeave;
+    ceState.sendData = inputStruct->sendData;
+    ceState.buffer = inputStruct->buffer;
+    ceState.bufferLen = inputStruct->bufferLen;
+    ceState.stopNfc = false;
+    startNfc();
+    return 0;
 }

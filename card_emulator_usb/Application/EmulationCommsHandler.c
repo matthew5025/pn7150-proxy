@@ -59,6 +59,7 @@ void genRandomData(unsigned char *buffer, unsigned int bufferSize) {
 }
 
 void sendTagCommand() {
+    printf("HEHO SENDING COMMAND?\r\n");
     memcpy(outputMessage.message, sharedBuffer, sharedBufferLen);
     outputMessage.type = TAG_CMD;
     outputMessage.length = sharedBufferLen;

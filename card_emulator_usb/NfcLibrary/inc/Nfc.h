@@ -364,3 +364,5 @@ bool NxpNci_FactoryTest_RfOn(void);
 
 #endif
 /********************************************************************************/
+
+void* NxpNci_DiscoveryCallback(NxpNci_RfIntf_t *pRfIntf);

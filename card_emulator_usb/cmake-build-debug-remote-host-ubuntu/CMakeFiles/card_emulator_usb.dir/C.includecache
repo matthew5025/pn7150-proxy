@@ -7,8 +7,8 @@
 #IncludeRegexTransform: 
 
 ../NfcLibrary/inc/Nfc.h
-
-../NfcTask/inc/ndef_helper.h
+stdbool.h
+-
 
 ../TML/inc/tool.h
 stdio.h
@@ -24,17 +24,15 @@ stdbool.h
 unistd.h
 -
 
-/tmp/tmp.0l2CKXr8AY/NfcTask/src/nfc_task.c
-stdio.h
--
-stdint.h
--
-string.h
+/tmp/tmp.0l2CKXr8AY/Application/NfcEmulUsbHandler.c
+Nfc.h
 -
 tool.h
 -
-Nfc.h
--
-ndef_helper.h
+NfcEmulUsbHandler.h
+/tmp/tmp.0l2CKXr8AY/Application/NfcEmulUsbHandler.h
+
+/tmp/tmp.0l2CKXr8AY/Application/NfcEmulUsbHandler.h
+semaphore.h
 -
 

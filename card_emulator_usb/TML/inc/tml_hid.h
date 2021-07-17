@@ -17,3 +17,4 @@ void tml_hid_Disconnect(void);
 void tml_hid_Send(uint8_t *pBuffer, uint16_t BufferLen, uint16_t *pBytesSent);
 void tml_hid_Receive(uint8_t *pBuffer, uint16_t BufferLen, uint16_t *pBytes, uint16_t timeout);
 void tml_hid_Cancel(void);
+static void timeoutCb(void* pContext);

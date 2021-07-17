@@ -16,6 +16,8 @@
 #include <tml.h>
 #include <NxpNci.h>
 #include <Nfc_settings.h>
+#include <pthread.h>
+#include <tml_hid.h>
 
 #define MAX_NCI_FRAME_SIZE    258
 
@@ -187,6 +189,14 @@ void NxpNci_ProcessCardMode(NxpNci_RfIntf_t RfIntf)
         /* is DATA_PACKET ? */
         else if((Answer[0] == 0x00) && (Answer[1] == 0x00))
         {
+
+            PRINTF("APDU: ");
+            for(int i = 3; i < AnswerSize; i++){
+                PRINTF("%02x ", Answer[i]);
+            }
+            PRINTF("\r\n");
+
+
             /* DATA_PACKET */
             uint8_t Cmd[MAX_NCI_FRAME_SIZE];
             uint16_t CmdSize;
@@ -223,13 +233,14 @@ bool NxpNci_CardModeReceive (unsigned char *pData, unsigned char *pDataSize)
     /* Reset Card emulation state */
     T4T_NDEF_EMU_Reset();
 
-    while(NxpNci_WaitForReception(Answer, sizeof(Answer), &AnswerSize, TIMEOUT_2S) == NXPNCI_SUCCESS)
+    while(NxpNci_WaitForReception(Answer, sizeof(Answer), &AnswerSize, 5000) == NXPNCI_SUCCESS)
     {
 
         PRINTF("NCI: ");
         for(int i = 0; i < AnswerSize; i++){
             PRINTF("%02x ", Answer[i]);
         }
+        PRINTF("\r\n");
 
 
         /* is RF_DEACTIVATE_NTF ? */
@@ -262,6 +273,7 @@ bool NxpNci_CardModeReceive (unsigned char *pData, unsigned char *pDataSize)
     }
     return status;
 }
+
 
 bool NxpNci_CardModeSend (unsigned char *pData, unsigned char DataSize)
 {
@@ -1146,6 +1158,71 @@ wait:
 
     return NXPNCI_SUCCESS;
 }
+
+void* NxpNci_DiscoveryCallback(NxpNci_RfIntf_t *pRfIntf)
+{
+    uint8_t NCIRfDiscoverSelect[] = {0x21, 0x04, 0x03, 0x01, PROT_ISODEP, INTF_ISODEP};
+    uint8_t Answer[MAX_NCI_FRAME_SIZE];
+    uint16_t AnswerSize;
+
+    do
+    {
+        if(NxpNci_WaitForReception(Answer, sizeof(Answer), &AnswerSize, TIMEOUT_INFINITE) == NXPNCI_ERROR) return NXPNCI_ERROR;
+    }while ((Answer[0] != 0x61) || ((Answer[1] != 0x05) && (Answer[1] != 0x03)));
+
+    gNextTag_Protocol = PROT_UNDETERMINED;
+
+    /* Is RF_INTF_ACTIVATED_NTF ? */
+    if (Answer[1] == 0x05)
+    {
+        pRfIntf->Interface = Answer[4];
+        pRfIntf->Protocol = Answer[5];
+        pRfIntf->ModeTech = Answer[6];
+        pRfIntf->MoreTags = false;
+        NxpNci_FillInterfaceInfo(pRfIntf, &Answer[10]);
+    }
+    else /* RF_DISCOVER_NTF */
+    {
+        pRfIntf->Interface = INTF_UNDETERMINED;
+        pRfIntf->Protocol = Answer[4];
+        pRfIntf->ModeTech = Answer[5];
+        pRfIntf->MoreTags = true;
+
+        /* Get next NTF for further activation */
+        do {
+            if(NxpNci_WaitForReception(Answer, sizeof(Answer), &AnswerSize, TIMEOUT_100MS) == NXPNCI_ERROR)    return NXPNCI_ERROR;
+        } while ((Answer[0] != 0x61) || (Answer[1] != 0x03));
+        gNextTag_Protocol = Answer[4];
+
+        /* Remaining NTF ? */
+        while(Answer[AnswerSize-1] == 0x02) NxpNci_WaitForReception(Answer, sizeof(Answer), &AnswerSize, TIMEOUT_100MS);
+
+        /* In case of multiple cards, select the first one */
+        NCIRfDiscoverSelect[4] = pRfIntf->Protocol;
+        if (pRfIntf->Protocol == PROT_ISODEP) NCIRfDiscoverSelect[5] = INTF_ISODEP;
+        else if (pRfIntf->Protocol == PROT_NFCDEP) NCIRfDiscoverSelect[5] = INTF_NFCDEP;
+        else if (pRfIntf->Protocol == PROT_MIFARE) NCIRfDiscoverSelect[5] = INTF_TAGCMD;
+        else NCIRfDiscoverSelect[5] = INTF_FRAME;
+        NxpNci_HostTransceive(NCIRfDiscoverSelect, sizeof(NCIRfDiscoverSelect), Answer, sizeof(Answer), &AnswerSize);
+        if ((Answer[0] == 0x41) || (Answer[1] == 0x04) || (Answer[3] == 0x00))
+        {
+            NxpNci_WaitForReception(Answer, sizeof(Answer), &AnswerSize, TIMEOUT_100MS);
+            if ((Answer[0] == 0x61) || (Answer[1] == 0x05))
+            {
+                pRfIntf->Interface = Answer[4];
+                pRfIntf->Protocol = Answer[5];
+                pRfIntf->ModeTech = Answer[6];
+                NxpNci_FillInterfaceInfo(pRfIntf, &Answer[10]);
+            }
+        }
+    }
+
+    /* In case of unknown target align protocol information */
+    if (pRfIntf->Interface == INTF_UNDETERMINED) pRfIntf->Protocol = PROT_UNDETERMINED;
+
+    return NXPNCI_SUCCESS;
+}
+
 
 #ifdef NFC_FACTORY_TEST
 bool NxpNci_FactoryTest_Prbs(NxpNci_TechType_t type, NxpNci_Bitrate_t bitrate)
