@@ -11,6 +11,9 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <linux_nfc_api.h>
+#include <netinet/in.h>
+#include <netinet/tcp.h>
+#include <signal.h>
 
 enum MessageType{
     ECHO = 0x01,
@@ -92,6 +95,11 @@ void messageHandler() {
     }
 }
 
+void sigpipe_handler(int unused)
+{
+    printf("Got SIGPIPE!\r\n");
+}
+
 
 int readSocket() {
     long bytesRead = recv(comSocket, inBuffer, 1024, 0);
@@ -130,7 +138,24 @@ int readSocket() {
     return 0;
 }
 
+void enable_keepalive(int sock) {
+    int yes = 1;
+    setsockopt(sock, SOL_SOCKET, SO_KEEPALIVE, &yes, sizeof(int));
+
+    int idle = 3;
+    setsockopt(sock, IPPROTO_TCP, TCP_KEEPIDLE, &idle, sizeof(int));
+
+    int interval = 1;
+    setsockopt(sock, IPPROTO_TCP, TCP_KEEPINTVL, &interval, sizeof(int));
+
+    int maxpkt = 10;
+    setsockopt(sock, IPPROTO_TCP, TCP_KEEPCNT, &maxpkt, sizeof(int));
+}
+
+
 void setSocket(int in_sock) {
+    sigaction(SIGPIPE, &(struct sigaction){sigpipe_handler}, NULL);
+    enable_keepalive(in_sock);
     comSocket = in_sock;
 }
 
