@@ -1,0 +1,38 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+../NfcLibrary/inc/Nfc.h
+stdbool.h
+-
+
+../TML/inc/tool.h
+stdio.h
+-
+string.h
+-
+stdint.h
+-
+stddef.h
+-
+stdbool.h
+-
+unistd.h
+-
+
+/tmp/tmp.0l2CKXr8AY/Application/NfcEmulUsbHandler.c
+Nfc.h
+-
+tool.h
+-
+NfcEmulUsbHandler.h
+/tmp/tmp.0l2CKXr8AY/Application/NfcEmulUsbHandler.h
+
+/tmp/tmp.0l2CKXr8AY/Application/NfcEmulUsbHandler.h
+semaphore.h
+-
+

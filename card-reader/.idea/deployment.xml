@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="PublishConfigData" remoteFilesAllowedToDisappearOnAutoupload="false">
+    <serverData>
+      <paths name="Remote Host (888c1e42-ffa9-4d1f-871f-55eef1f2b8b3)">
+        <serverdata>
+          <mappings>
+            <mapping local="$PROJECT_DIR$" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
+      <paths name="Remote Host (a83ad99b-ef31-407c-aa60-75938c130547)">
+        <serverdata>
+          <mappings>
+            <mapping local="$PROJECT_DIR$" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
+      <paths name="Remote Host (daad1398-e082-4b71-935b-0e24bf4d01dd)">
+        <serverdata>
+          <mappings>
+            <mapping local="$PROJECT_DIR$" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
+      <paths name="Remote Host Client (1f82ddae-7f50-417a-a0f6-a6381a12126a)">
+        <serverdata>
+          <mappings>
+            <mapping local="$PROJECT_DIR$" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
+      <paths name="Remote Host Client (426c4879-3281-4138-8a2c-97267e9cff72)">
+        <serverdata>
+          <mappings>
+            <mapping local="$PROJECT_DIR$" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
+      <paths name="Remote Host Client (49aab7e3-f3a1-4f58-b544-ff55f7c7c6db)">
+        <serverdata>
+          <mappings>
+            <mapping local="$PROJECT_DIR$" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
+      <paths name="Remote Host Client (fb26f567-2a9d-43fa-9c7d-7a7e0cf19729)">
+        <serverdata>
+          <mappings>
+            <mapping local="$PROJECT_DIR$" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
+      <paths name="Remote Host Server (342efa7e-257a-497b-b7a8-ab5318345102)">
+        <serverdata>
+          <mappings>
+            <mapping local="$PROJECT_DIR$" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
+      <paths name="Remote Host Server (75188f49-e79b-46e2-a20c-3cba457c393d)">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/tmp/tmp.gbk3IW8Grm" local="$PROJECT_DIR$" />
+          </mappings>
+          <excludedPaths>
+            <excludedPath local="true" path="$PROJECT_DIR$/cmake-build-debug-remote-host-server" />
+            <excludedPath local="true" path="$PROJECT_DIR$/cmake-build-debug-remote-host-server" />
+          </excludedPaths>
+        </serverdata>
+      </paths>
+      <paths name="Remote Host Server (d31ddfa3-5b4b-488e-9d7d-b68e0d6448fa)">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/tmp/tmp.TBFkiTYpoJ" local="$PROJECT_DIR$" />
+          </mappings>
+          <excludedPaths>
+            <excludedPath local="true" path="$PROJECT_DIR$/cmake-build-debug-remote-host-server" />
+          </excludedPaths>
+        </serverdata>
+      </paths>
+      <paths name="Remote Host Server (ee52b468-4dfe-4b5a-ace4-e5149d53dc63)">
+        <serverdata>
+          <mappings>
+            <mapping local="$PROJECT_DIR$" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
+      <paths name="Remote Host Ubuntu (6095251a-bf34-4ea1-9fa2-f75420396df1)">
+        <serverdata>
+          <mappings>
+            <mapping local="$PROJECT_DIR$" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
+    </serverData>
+  </component>
+</project>

@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="card_emulator_usb"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="gcc"/>
+		<Option virtualFolders="CMake Files\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="/tmp/tmp.0l2CKXr8AY/cmake-build-debug-remote-host-ubuntu"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/tmp/tmp.0l2CKXr8AY/cmake-build-debug-remote-host-ubuntu/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/tmp/tmp.0l2CKXr8AY/cmake-build-debug-remote-host-ubuntu/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/tmp/tmp.0l2CKXr8AY/cmake-build-debug-remote-host-ubuntu/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/tmp/tmp.0l2CKXr8AY/cmake-build-debug-remote-host-ubuntu/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="rebuild_cache">
+				<Option working_dir="/tmp/tmp.0l2CKXr8AY/cmake-build-debug-remote-host-ubuntu"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/tmp/tmp.0l2CKXr8AY/cmake-build-debug-remote-host-ubuntu/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/tmp/tmp.0l2CKXr8AY/cmake-build-debug-remote-host-ubuntu/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/tmp/tmp.0l2CKXr8AY/cmake-build-debug-remote-host-ubuntu/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/tmp/tmp.0l2CKXr8AY/cmake-build-debug-remote-host-ubuntu/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="edit_cache">
+				<Option working_dir="/tmp/tmp.0l2CKXr8AY/cmake-build-debug-remote-host-ubuntu"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/tmp/tmp.0l2CKXr8AY/cmake-build-debug-remote-host-ubuntu/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/tmp/tmp.0l2CKXr8AY/cmake-build-debug-remote-host-ubuntu/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/tmp/tmp.0l2CKXr8AY/cmake-build-debug-remote-host-ubuntu/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/tmp/tmp.0l2CKXr8AY/cmake-build-debug-remote-host-ubuntu/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="card_emulator_usb">
+				<Option output="/tmp/tmp.0l2CKXr8AY/cmake-build-debug-remote-host-ubuntu/card_emulator_usb" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/tmp/tmp.0l2CKXr8AY/cmake-build-debug-remote-host-ubuntu"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DCARDEMU_SUPPORT"/>
+					<Add option="-DCARDEMU_RAW_EXCHANGE"/>
+					<Add directory="/tmp/tmp.0l2CKXr8AY/TML/inc"/>
+					<Add directory="/tmp/tmp.0l2CKXr8AY/NfcLibrary/inc"/>
+					<Add directory="/tmp/tmp.0l2CKXr8AY/NfcLibrary/NxpNci/inc"/>
+					<Add directory="/tmp/tmp.0l2CKXr8AY/NfcLibrary/NdefLibrary/inc"/>
+					<Add directory="/tmp/tmp.0l2CKXr8AY/NfcTask/inc"/>
+					<Add directory="/tmp/tmp.0l2CKXr8AY/Application"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/9/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/tmp/tmp.0l2CKXr8AY/cmake-build-debug-remote-host-ubuntu/Makefile&quot;  VERBOSE=1 card_emulator_usb"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/tmp/tmp.0l2CKXr8AY/cmake-build-debug-remote-host-ubuntu/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/tmp/tmp.0l2CKXr8AY/cmake-build-debug-remote-host-ubuntu/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/tmp/tmp.0l2CKXr8AY/cmake-build-debug-remote-host-ubuntu/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="card_emulator_usb/fast">
+				<Option output="/tmp/tmp.0l2CKXr8AY/cmake-build-debug-remote-host-ubuntu/card_emulator_usb" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/tmp/tmp.0l2CKXr8AY/cmake-build-debug-remote-host-ubuntu"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DCARDEMU_SUPPORT"/>
+					<Add option="-DCARDEMU_RAW_EXCHANGE"/>
+					<Add directory="/tmp/tmp.0l2CKXr8AY/TML/inc"/>
+					<Add directory="/tmp/tmp.0l2CKXr8AY/NfcLibrary/inc"/>
+					<Add directory="/tmp/tmp.0l2CKXr8AY/NfcLibrary/NxpNci/inc"/>
+					<Add directory="/tmp/tmp.0l2CKXr8AY/NfcLibrary/NdefLibrary/inc"/>
+					<Add directory="/tmp/tmp.0l2CKXr8AY/NfcTask/inc"/>
+					<Add directory="/tmp/tmp.0l2CKXr8AY/Application"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/9/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/tmp/tmp.0l2CKXr8AY/cmake-build-debug-remote-host-ubuntu/Makefile&quot;  VERBOSE=1 card_emulator_usb/fast"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/tmp/tmp.0l2CKXr8AY/cmake-build-debug-remote-host-ubuntu/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/tmp/tmp.0l2CKXr8AY/cmake-build-debug-remote-host-ubuntu/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/tmp/tmp.0l2CKXr8AY/cmake-build-debug-remote-host-ubuntu/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="/tmp/tmp.0l2CKXr8AY/Application/EmulationCommsHandler.c">
+			<Option target="card_emulator_usb"/>
+		</Unit>
+		<Unit filename="/tmp/tmp.0l2CKXr8AY/Application/EmulationCommsHandler.h">
+			<Option target="card_emulator_usb"/>
+		</Unit>
+		<Unit filename="/tmp/tmp.0l2CKXr8AY/Application/NfcEmulHandler.c">
+			<Option target="card_emulator_usb"/>
+		</Unit>
+		<Unit filename="/tmp/tmp.0l2CKXr8AY/Application/NfcEmulHandler.h">
+			<Option target="card_emulator_usb"/>
+		</Unit>
+		<Unit filename="/tmp/tmp.0l2CKXr8AY/Application/NfcEmulUsbHandler.c">
+			<Option target="card_emulator_usb"/>
+		</Unit>
+		<Unit filename="/tmp/tmp.0l2CKXr8AY/Application/NfcEmulUsbHandler.h">
+			<Option target="card_emulator_usb"/>
+		</Unit>
+		<Unit filename="/tmp/tmp.0l2CKXr8AY/Application/main.c">
+			<Option target="card_emulator_usb"/>
+		</Unit>
+		<Unit filename="/tmp/tmp.0l2CKXr8AY/NfcLibrary/NdefLibrary/src/P2P_NDEF.c">
+			<Option target="card_emulator_usb"/>
+		</Unit>
+		<Unit filename="/tmp/tmp.0l2CKXr8AY/NfcLibrary/NdefLibrary/src/RW_NDEF.c">
+			<Option target="card_emulator_usb"/>
+		</Unit>
+		<Unit filename="/tmp/tmp.0l2CKXr8AY/NfcLibrary/NdefLibrary/src/RW_NDEF_MIFARE.c">
+			<Option target="card_emulator_usb"/>
+		</Unit>
+		<Unit filename="/tmp/tmp.0l2CKXr8AY/NfcLibrary/NdefLibrary/src/RW_NDEF_T1T.c">
+			<Option target="card_emulator_usb"/>
+		</Unit>
+		<Unit filename="/tmp/tmp.0l2CKXr8AY/NfcLibrary/NdefLibrary/src/RW_NDEF_T2T.c">
+			<Option target="card_emulator_usb"/>
+		</Unit>
+		<Unit filename="/tmp/tmp.0l2CKXr8AY/NfcLibrary/NdefLibrary/src/RW_NDEF_T3T.c">
+			<Option target="card_emulator_usb"/>
+		</Unit>
+		<Unit filename="/tmp/tmp.0l2CKXr8AY/NfcLibrary/NdefLibrary/src/RW_NDEF_T4T.c">
+			<Option target="card_emulator_usb"/>
+		</Unit>
+		<Unit filename="/tmp/tmp.0l2CKXr8AY/NfcLibrary/NdefLibrary/src/RW_NDEF_T5T.c">
+			<Option target="card_emulator_usb"/>
+		</Unit>
+		<Unit filename="/tmp/tmp.0l2CKXr8AY/NfcLibrary/NdefLibrary/src/T4T_NDEF_emu.c">
+			<Option target="card_emulator_usb"/>
+		</Unit>
+		<Unit filename="/tmp/tmp.0l2CKXr8AY/NfcLibrary/NxpNci/src/NxpNci.c">
+			<Option target="card_emulator_usb"/>
+		</Unit>
+		<Unit filename="/tmp/tmp.0l2CKXr8AY/NfcTask/src/ndef_helper.c">
+			<Option target="card_emulator_usb"/>
+		</Unit>
+		<Unit filename="/tmp/tmp.0l2CKXr8AY/NfcTask/src/nfc_task.c">
+			<Option target="card_emulator_usb"/>
+		</Unit>
+		<Unit filename="/tmp/tmp.0l2CKXr8AY/TML/src/framework_Allocator.c">
+			<Option target="card_emulator_usb"/>
+		</Unit>
+		<Unit filename="/tmp/tmp.0l2CKXr8AY/TML/src/framework_Container.c">
+			<Option target="card_emulator_usb"/>
+		</Unit>
+		<Unit filename="/tmp/tmp.0l2CKXr8AY/TML/src/framework_Map.c">
+			<Option target="card_emulator_usb"/>
+		</Unit>
+		<Unit filename="/tmp/tmp.0l2CKXr8AY/TML/src/framework_Parcel.c">
+			<Option target="card_emulator_usb"/>
+		</Unit>
+		<Unit filename="/tmp/tmp.0l2CKXr8AY/TML/src/framework_Timer.c">
+			<Option target="card_emulator_usb"/>
+		</Unit>
+		<Unit filename="/tmp/tmp.0l2CKXr8AY/TML/src/framework_log.c">
+			<Option target="card_emulator_usb"/>
+		</Unit>
+		<Unit filename="/tmp/tmp.0l2CKXr8AY/TML/src/framework_mutex.c">
+			<Option target="card_emulator_usb"/>
+		</Unit>
+		<Unit filename="/tmp/tmp.0l2CKXr8AY/TML/src/framework_sem.c">
+			<Option target="card_emulator_usb"/>
+		</Unit>
+		<Unit filename="/tmp/tmp.0l2CKXr8AY/TML/src/framework_thread.c">
+			<Option target="card_emulator_usb"/>
+		</Unit>
+		<Unit filename="/tmp/tmp.0l2CKXr8AY/TML/src/hid.c">
+			<Option target="card_emulator_usb"/>
+		</Unit>
+		<Unit filename="/tmp/tmp.0l2CKXr8AY/TML/src/lpcusbsio.c">
+			<Option target="card_emulator_usb"/>
+		</Unit>
+		<Unit filename="/tmp/tmp.0l2CKXr8AY/TML/src/tml.c">
+			<Option target="card_emulator_usb"/>
+		</Unit>
+		<Unit filename="/tmp/tmp.0l2CKXr8AY/TML/src/tml_hid.c">
+			<Option target="card_emulator_usb"/>
+		</Unit>
+		<Unit filename="/tmp/tmp.0l2CKXr8AY/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>
