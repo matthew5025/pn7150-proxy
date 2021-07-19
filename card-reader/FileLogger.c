@@ -17,7 +17,7 @@ void createFile(){
     char text[21];
     time_t now = time(NULL);
     struct tm *t = localtime(&now);
-    unsigned long length = strftime(text, sizeof(text)-1, "%d-%m-%YT%H-%M-%S", t);
+    unsigned long length = strftime(text, sizeof(text)-1, "%Y-%m-%dT%H-%M-%S", t);
     text[length] = 0;
     fp = fopen(text, "w+");
 }
