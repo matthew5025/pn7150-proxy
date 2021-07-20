@@ -4,8 +4,8 @@
 
 #ifndef CARD_READER_FILELOGGER_H
 #define CARD_READER_FILELOGGER_H
+#include "CommsHandler.h"
+#include "LoggingHandler.h"
 
+void fileLoggerProcessMsg(enum LogMsgType type, struct MessagePacket* inPacket);
 #endif //CARD_READER_FILELOGGER_H
-void createFile();
-void writeToFile(char * format, ...);
-void closeFile();

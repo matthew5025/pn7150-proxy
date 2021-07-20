@@ -47,7 +47,7 @@ long sendMessage() {
     outBuffer[3] = outputMessage.type;
     memcpy(&outBuffer[4], &outputMessage.length, sizeof(uint16_t));
     memcpy(outBuffer + 6, outputMessage.message, outputMessage.length);
-    printf("Sending message of type %#04x with length %u\r\n", outputMessage.type, outputMessage.length);
+    //printf("Sending message of type %#04x with length %u\r\n", outputMessage.type, outputMessage.length);
     return send(comSocket, outBuffer, outputMessage.length + 6, MSG_NOSIGNAL);
 }
 
@@ -120,7 +120,7 @@ void messageHandler() {
 
 
 int readSocket() {
-    long bytesRead = recv(comSocket, inBuffer, 1024, 0);
+    long bytesRead = recvfrom(comSocket, inBuffer, 1024, 0, (struct sockaddr*)NULL, NULL);
     while (bytesRead < 5) {
         long messageLen = recv(comSocket, inBuffer + bytesRead, 1024 - bytesRead, 0);
         if (messageLen < 1) {
@@ -144,7 +144,7 @@ int readSocket() {
             remainingBytes = inputMessage.length - (bytesRead - 6);
         }
         memcpy(inputMessage.message, &inBuffer[6], inputMessage.length);
-        printf("Got message of type %#04x with length %u\r\n", inputMessage.type, inputMessage.length);
+        //printf("Got message of type %#04x with length %u\r\n", inputMessage.type, inputMessage.length);
         messageHandler();
     } else {
         printf("Invalid header, closing socket.\n");
@@ -154,6 +154,11 @@ int readSocket() {
     return 0;
 }
 
+void sendKeepAlive(){
+
+}
+
 void setSocket(int in_sock) {
+    endEmulation();
     comSocket = in_sock;
 }

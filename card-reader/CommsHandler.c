@@ -8,32 +8,17 @@
 #include "CommsHandler.h"
 #include "NfcHandler.h"
 #include "FileLogger.h"
-#include <stdint.h>
 #include <stdio.h>
 #include <linux_nfc_api.h>
 #include <signal.h>
+#include "LoggingHandler.h"
 
-enum MessageType{
-    ECHO = 0x01,
-    ECHO_REPLY = 0x02,
-    READER_ARRIVAL = 0x03,
-    TAG_INFO_REPLY = 0x04,
-    TAG_CMD = 0x05,
-    TAG_CMD_REPLY = 0x06,
-    CARD_GONE = 0x07,
-    READER_GONE = 0x08
-};
 
 unsigned char inBuffer[1024];
 unsigned char outBuffer[1024];
 int comSocket = -1;
 unsigned char header[] = {0xAB, 0xBB, 0xCB};
 
-struct MessagePacket {
-    unsigned char type;
-    uint16_t length;
-    unsigned char message [512];
-};
 
 struct MessagePacket inputMessage, outputMessage;
 
@@ -47,7 +32,8 @@ long sendMessage() {
     outBuffer[3] = outputMessage.type;
     memcpy(&outBuffer[4], &outputMessage.length, sizeof (uint16_t));
     memcpy(outBuffer + 6, outputMessage.message, outputMessage.length);
-    printf("Sending message of type %#04x with length %u\r\n", outputMessage.type, outputMessage.length);
+    //printf("Sending message of type %#04x with length %u\r\n", outputMessage.type, outputMessage.length);
+    addData(SEND_MSG, &outputMessage);
     return send(comSocket, outBuffer, outputMessage.length + 6, 0);
 }
 
@@ -65,7 +51,6 @@ void sendCardArrival(){
 }
 
 void messageHandler() {
-    printf("Got message of type %#04x with length %u\r\n", inputMessage.type, inputMessage.length);
     switch (inputMessage.type) {
         case ECHO:
             outputMessage.length = inputMessage.length;
@@ -87,13 +72,11 @@ void messageHandler() {
             onReaderArrival();
             return;
         case READER_GONE:
-            closeFile();
             return;
         default:
             return;
     }
 }
-
 
 void sigpipe_handler(int unused)
 {
@@ -102,11 +85,11 @@ void sigpipe_handler(int unused)
 
 
 int readSocket() {
-    sigaction(SIGPIPE, &(struct sigaction){sigpipe_handler}, NULL);
     long bytesRead = recv(comSocket, inBuffer, 1024, 0);
     while (bytesRead < 5) {
         long messageLen = recv(comSocket, inBuffer + bytesRead, 1024 - bytesRead, 0);
         if (messageLen < 1) {
+            perror("Error retrieving message");
             nfcManager_doDeinitialize();
             return -1;
         }
@@ -129,6 +112,8 @@ int readSocket() {
             remainingBytes = inputMessage.length - (bytesRead - 6);
         }
         memcpy(inputMessage.message, &inBuffer[6], inputMessage.length);
+        addData(RECV_MSG, &inputMessage);
+        //printf("Got message of type %#04x with length %u\r\n", inputMessage.type, inputMessage.length);
         messageHandler();
     } else {
         printf("Invalid header.\n");
@@ -138,7 +123,10 @@ int readSocket() {
     return 0;
 }
 
+
 void setSocket(int in_sock) {
+    sigaction(SIGPIPE, &(struct sigaction){sigpipe_handler}, NULL);
     comSocket = in_sock;
+    disableReader();
 }
 
