@@ -42,8 +42,13 @@ _Noreturn void* processData(void* unused){
         pthread_cond_wait(&condition, &mutex);
         while (currentBuffer->next != endBuffer){
             currentBuffer = currentBuffer->next;
-            printf("Processing message of type %#04x with length %u\r\n",
-                   currentBuffer->data.type, currentBuffer->data.length);
+            if(currentBuffer->type == RECV_MSG){
+                printf("Received message type %#04x with length %u\r\n",
+                       currentBuffer->data.type, currentBuffer->data.length);
+            }else if(currentBuffer->type == SEND_MSG){
+                printf("Sent message type %#04x with length %u\r\n",
+                       currentBuffer->data.type, currentBuffer->data.length);
+            }
             fileLoggerProcessMsg(currentBuffer->type, &currentBuffer->data);
         }
     }
