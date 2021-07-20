@@ -13,3 +13,4 @@ unsigned int sendTagCommand(unsigned char* result, unsigned int maxLen, unsigned
 void setOnCardDepartCallback(void (*ptr)());
 void setOnCardArrivalCallback(void (*ptr)());
 void onReaderArrival();
+void disableReader();

@@ -42,19 +42,6 @@ void onTagArrival(nfc_tag_info_t *pTagInfo) {
 }
 
 void onReaderArrival(){
-    createFile();
-    if (g_tagInfos.technology == 2) {
-        writeToFile("Card Type: ISO14443B ");
-
-    } else if (g_tagInfos.technology == 1) {
-        writeToFile("Card Type: ISO14443A ");
-    }
-
-    writeToFile("Card UID: ");
-    for(int i = 0; i< g_tagInfos.uid_length; i++){
-        writeToFile("%02X", g_tagInfos.uid[i]);
-    }
-    writeToFile("\n");
 }
 
 void setOnCardDepartCallback(void (*ptr)()) {
@@ -72,21 +59,7 @@ void setOnCardArrivalCallback(void (*ptr)()) {
 
 unsigned int sendTagCommand(unsigned char *result, unsigned int maxLen, unsigned int timeout) {
     unsigned int resultLen = 0;
-    writeToFile("Received data from reader : \n");
-    for (int i = 0x00; i < sharedBufferLen; i++) {
-        writeToFile("%02X", sharedBuffer[i]);
-    }
-    writeToFile("\n\n");
-
     resultLen = nfcTag_transceive(g_tagInfos.handle, sharedBuffer, sharedBufferLen, result, maxLen, timeout);
-
-    writeToFile("Response sent : \n");
-    for (int i = 0x00; i < resultLen; i++) {
-        writeToFile("%02X", result[i]);
-    }
-
-    writeToFile("\n\n");
-
     return resultLen;
 }
 
@@ -97,4 +70,12 @@ void enableReader() {
     nfcManager_doInitialize();
     nfcManager_registerTagCallback(&g_TagCB);
     nfcManager_enableDiscovery(DEFAULT_NFA_TECH_MASK, 0x01, 0, 0);
+}
+
+void disableReader(){
+    nfcManager_deregisterTagCallback();
+    nfcManager_disableDiscovery();
+    nfcManager_doDeinitialize();
+    printf("Reader Stopped.\n");
+
 }
