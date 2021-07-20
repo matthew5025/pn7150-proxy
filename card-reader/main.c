@@ -1,10 +1,9 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <sys/socket.h>
-#include <stdlib.h>
 #include <netinet/in.h>
 #include <string.h>
-#include <fcntl.h>
+#include "CompanionController.h"
 #include "CommsHandler.h"
 #include "LoggingHandler.h"
 #include <arpa/inet.h>
@@ -48,7 +47,9 @@ int main(int argc, char const *argv[]) {
     int opt = 1;
     initBuffer();
     int currSocket = -1;
-    pthread_t t1;
+    pthread_t t1, t2;
+    char test [] = "test";
+    pthread_create(&t2, NULL, startCompanionThread, &test);
 
 #pragma clang diagnostic push
 #pragma ide diagnostic ignored "EndlessLoop"

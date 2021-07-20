@@ -30,6 +30,7 @@
           </mappings>
           <excludedPaths>
             <excludedPath local="true" path="$PROJECT_DIR$/cmake-build-debug-remote-host-client" />
+            <excludedPath local="true" path="$PROJECT_DIR$/cmake-build-debug-remote-host-client" />
           </excludedPaths>
         </serverdata>
       </paths>

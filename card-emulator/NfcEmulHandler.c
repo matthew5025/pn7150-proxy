@@ -81,7 +81,6 @@ void startEmulation(){
         nfcManager_doInitialize();
         nfcHce_registerHceCallback(&g_HceCB);
         printf("Emulation Started. Card Type: ISO14443A ");
-
     }
 
     printf("Card UID: ");

@@ -78,10 +78,10 @@ void messageHandler() {
     }
 }
 
-void sigpipe_handler(int unused)
-{
-    printf("Got SIGPIPE!\r\n");
-}
+//void sigpipe_handler(int unused)
+//{
+//    printf("Got SIGPIPE!\r\n");
+//}
 
 
 int readSocket() {
@@ -125,7 +125,7 @@ int readSocket() {
 
 
 void setSocket(int in_sock) {
-    sigaction(SIGPIPE, &(struct sigaction){sigpipe_handler}, NULL);
+    //sigaction(SIGPIPE, &(struct sigaction){sigpipe_handler}, NULL);
     comSocket = in_sock;
     disableReader();
 }
