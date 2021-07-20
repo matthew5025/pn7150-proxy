@@ -34,18 +34,6 @@ void setOnReaderArriveCallback(void (*ptr)()){
 void onHostCardEmulationActivated(unsigned char mode)
 {
     printf("Card activated\n");
-    g_readerMode = mode;
-    switch(mode)
-    {
-        case MODE_LISTEN_A: printf("Remote reader is type A\n");
-            break;
-        case MODE_LISTEN_B: printf("Remote reader is type B\n");
-            break;
-        case MODE_LISTEN_F: printf("Remote reader is type F\n");
-            break;
-        default: printf(" Remote reader type is unknown\n");
-            break;
-    }
     (*onReaderArriveCallback)();
 }
 

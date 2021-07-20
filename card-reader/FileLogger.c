@@ -6,12 +6,13 @@
 #include <time.h>
 #include <stdio.h>
 #include <stdarg.h>
+#include <string.h>
 
 FILE *fp = NULL;
 
 void createFile(){
     if(fp != NULL){
-        printf("Attempting to create a new file when one already exists...\n");
+        //printf("Attempting to create a new file when one already exists...\n");
         return;
     }
     char text[21];
@@ -24,7 +25,7 @@ void createFile(){
 
 void writeToFile(char * format, ...){
     if(fp == NULL){
-        printf("Attempting to write to nullptr...\n");
+        //printf("Attempting to write to nullptr...\n");
         return;
     }
     va_list args;
@@ -35,9 +36,44 @@ void writeToFile(char * format, ...){
 
 void closeFile(){
     if(fp == NULL){
-        printf("Attempting to close nullptr...\n");
+        //printf("Attempting to close nullptr...\n");
         return;
     }
     fclose(fp);
     fp = NULL;
+}
+
+void fileLoggerProcessMsg(enum LogMsgType type, struct MessagePacket* inPacket){
+    if(inPacket->type == READER_ARRIVAL){
+        createFile();
+    } else if (inPacket->type == READER_GONE){
+        closeFile();
+    } else if (inPacket->type == TAG_INFO_REPLY){
+        unsigned int tagTech;
+        unsigned int uidLength;
+        memcpy(&tagTech, inPacket->message, 4);
+        memcpy(&uidLength, &inPacket->message[4], 4);
+        if(tagTech == 1){
+            writeToFile("Card Type: ISO14443A ");
+        } else if(tagTech == 2){
+            writeToFile("Card Type: ISO14443B ");
+        }
+        writeToFile("Card UID: ");
+        for(int i = 0; i < uidLength; i++){
+            writeToFile("%02X", inPacket->message[8 + i]);
+        }
+        writeToFile("\r\n");
+    }else if(inPacket->type == TAG_CMD){
+        writeToFile("Received data from reader: \r\n");
+        for (int i = 0x00; i < inPacket->length; i++) {
+            writeToFile("%02X", inPacket->message[i]);
+        }
+        writeToFile("\r\n\r\n");
+    } else if(inPacket->type == TAG_CMD_REPLY){
+        writeToFile("Response sent: \r\n");
+        for (int i = 0x00; i < inPacket->length; i++) {
+            writeToFile("%02X", inPacket->message[i]);
+        }
+        writeToFile("\r\n\r\n");
+    }
 }
