@@ -9,7 +9,7 @@ Restart=always
 RestartSec=5s
 
 [Service]
-ExecStart=/usr/src/pn7150-proxy/card-emulator/card_emulator
+ExecStart=/usr/src/pn7150-proxy/Release/card_emulator
 
 [Install]
 WantedBy=multi-user.target
