@@ -1,0 +1,15 @@
+[Unit]
+Description=pn7150-proxy-card-emulator
+StartLimitInterval=500
+StartLimitBurst=5
+After=network-online.target --any
+
+[Service]
+Restart=always
+RestartSec=5s
+
+[Service]
+ExecStart=/usr/src/pn7150-proxy/card-emulator/card_emulator
+
+[Install]
+WantedBy=multi-user.target
