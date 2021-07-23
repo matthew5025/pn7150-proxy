@@ -1,0 +1,15 @@
+[Unit]
+Description=pn7150-proxy-card-reader
+StartLimitInterval=500
+StartLimitBurst=5
+After=network-online.target --any
+
+[Service]
+Restart=always
+RestartSec=5s
+
+[Service]
+ExecStart=/usr/bin/stdbuf -oL /usr/src/pn7150-proxy/Release/card_reader
+
+[Install]
+WantedBy=multi-user.target
