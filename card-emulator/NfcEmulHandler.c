@@ -65,6 +65,8 @@ void startEmulation(){
     g_HceCB.onHostCardEmulationDeactivated = onHostCardEmulationDeactivated;
     unsigned int cardTech = *(unsigned int *)&sharedBuffer;
     unsigned long techMask = 0x00;
+    unsigned char bitRate = 0x03;
+    unsigned char fwi = 0x08;
     unsigned int uidLen = *(unsigned int *)&sharedBuffer[4];
     unsigned int addInfoLen = *(unsigned int *)&sharedBuffer[8 + uidLen];
     if(cardTech == 2){
@@ -74,6 +76,8 @@ void startEmulation(){
         nfcHce_registerHceCallback(&g_HceCB);
         nfcManager_setConfig(0x39, uidLen, &sharedBuffer[8]);
         nfcManager_setConfig(0x3A, 4, &sharedBuffer[12 + uidLen + 4]);
+        nfcManager_setConfig(0x5B, 1, &bitRate);
+        nfcManager_setConfig(0x58, 1, &fwi);
         printf("Emulation Started. Card Type: ISO14443B ");
     }else if(cardTech == 1){
         techMask = 0x01;

@@ -9,14 +9,18 @@
 
 #define PORT 8097
 
-_Noreturn void* startCompanionThread(void* thr_data){
-    printf("%s\n", (char *)thr_data);
+unsigned char messageHeader[] = {0xBC, 0xAC, 0xDC, 0xCC, 0xEC, 0xFC,
+                                 0xAD, 0xBD, 0xCD, 0xDD, 0xED, 0xFD};
+
+
+_Noreturn void *startCompanionThread(void *thr_data) {
+    printf("%s\n", (char *) thr_data);
     int server_fd, new_socket = 0;
     struct sockaddr_in address;
     int opt = 1;
     int addrlen = sizeof(address);
 
-    while(1){
+    while (1) {
         if ((server_fd = socket(AF_INET, SOCK_STREAM, 0)) == 0) {
             perror("socket failed");
             continue;

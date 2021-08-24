@@ -2,6 +2,8 @@
 // Created by natsa on 20/06/2021.
 //
 
+#define _GNU_SOURCE
+
 #include <unistd.h>
 #include <string.h>
 #include <sys/socket.h>
@@ -18,7 +20,8 @@ unsigned char inBuffer[1024];
 unsigned char outBuffer[1024];
 int comSocket = -1;
 unsigned char header[] = {0xAB, 0xBB, 0xCB};
-
+unsigned char intercept[] = {0x02, 0x00, 0x00, 0x0A, 0x05};
+unsigned char replace[] = {0x0A, 0x0B, 0x0C, 0x0D, 0x0E};
 
 struct MessagePacket inputMessage, outputMessage;
 
@@ -28,6 +31,12 @@ int checkHeader(unsigned char *input) {
 }
 
 long sendMessage() {
+
+    char* rplPtr = memmem(outputMessage.message, outputMessage.length, intercept, sizeof (intercept));
+    if(rplPtr != NULL){
+        memcpy(rplPtr, replace, sizeof (replace));
+    }
+
     memcpy(outBuffer, header, 3);
     outBuffer[3] = outputMessage.type;
     memcpy(&outBuffer[4], &outputMessage.length, sizeof (uint16_t));
@@ -90,7 +99,7 @@ int readSocket() {
         long messageLen = recv(comSocket, inBuffer + bytesRead, 1024 - bytesRead, 0);
         if (messageLen < 1) {
             perror("Error retrieving message");
-            nfcManager_doDeinitialize();
+            disableReader();
             return -1;
         }
         bytesRead = messageLen + bytesRead;
@@ -105,7 +114,7 @@ int readSocket() {
         while (remainingBytes > 0) {
             long messageLen = recv(comSocket, inBuffer + bytesRead, remainingBytes, 0);
             if (messageLen < 1) {
-                nfcManager_doDeinitialize();
+                disableReader();
                 return -1;
             }
             bytesRead = messageLen + bytesRead;
@@ -117,7 +126,7 @@ int readSocket() {
         messageHandler();
     } else {
         printf("Invalid header.\n");
-        nfcManager_doDeinitialize();
+        disableReader();
         return -1;
     }
     return 0;
